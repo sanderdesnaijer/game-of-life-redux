@@ -2,17 +2,14 @@ body,
 html {
   width: 100%;
   height: 100%;
+  margin: 0px;
 }
 
 #main-canvas {
-  outline: 1px solid #000;
-
+  width: 100%;
+  height: 100%;
   display: block;
   position: absolute;
-  top: 100px;
-  bottom: 0px;
-  left: 100px;
-  right: 100px;
   z-index: 0;
 }
 
@@ -20,4 +17,11 @@ html {
   display: inline-block;
   position: relative;
   z-index: 1;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
 }
