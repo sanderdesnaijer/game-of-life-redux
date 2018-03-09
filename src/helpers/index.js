@@ -45,8 +45,7 @@ export function calcPixelToGridPosition(
   const col = Math.floor(percentageX);
   const row = Math.floor(percentageY);
 
-  console.table({ percentageX, percentageY, row, col });
-
+  //console.table({ percentageX, percentageY, row, col });
   return {
     row,
     col

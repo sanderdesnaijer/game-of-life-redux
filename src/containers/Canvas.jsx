@@ -35,7 +35,6 @@ class Canvas extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (this.props.grid !== nextProps.grid) {
       this.drawGrid(nextProps.grid);
     }
@@ -102,7 +101,6 @@ class Canvas extends Component {
   };
 
   render() {
-    console.log('render');
     return <canvas id="main-canvas" ref={this.registerDom} />;
   }
 }

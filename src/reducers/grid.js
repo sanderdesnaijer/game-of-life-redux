@@ -38,6 +38,22 @@ const gridReducer = (state = initialState, action) => {
         grid
       };
     }
+    case ACTIONS.TOGGLE_CELL: {
+      const { row, col } = action.payload;
+      const grid = state.grid.map((gRow, rowI) =>
+        gRow.map((gCol, colI) => {
+          if (col === colI && row == rowI) {
+            const alive = state.grid[colI][rowI];
+            return !alive;
+          }
+          return gCol;
+        })
+      );
+      return {
+        ...state,
+        grid
+      };
+    }
     default: {
       return state;
     }

@@ -26,10 +26,10 @@ export const updateGrid = grid => ({
   }
 });
 
-export const toggleCell = (col, row) => ({
+export const toggleCell = (row, col) => ({
   type: ACTIONS.TOGGLE_CELL,
   payload: {
-    col,
-    row
+    row,
+    col
   }
 });
