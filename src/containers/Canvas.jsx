@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getGrid, getCellSize } from '../reducers/grid';
 
-import { registerContext, clickGrid } from '../actions/actions';
+import { registerContext, clickGrid, gotoNextFrame } from '../actions/actions';
 
 const enhance = connect(
   store => ({
@@ -11,7 +11,8 @@ const enhance = connect(
   }),
   {
     registerContext,
-    clickGrid
+    clickGrid,
+    gotoNextFrame
   }
 );
 
@@ -71,19 +72,6 @@ class Canvas extends Component {
     this.ctx.canvas.height = window.innerHeight;
   };
 
-  setWindowDimensions = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    this.setState({
-      width,
-      height
-    });
-
-    this.ctx.canvas.width = width;
-    this.ctx.canvas.height = height;
-  };
-
   onResize = () => {
     this.ctx.canvas.width = window.innerWidth;
     this.ctx.canvas.height = window.innerHeight;
@@ -95,9 +83,17 @@ class Canvas extends Component {
     this.props.clickGrid(layerX, layerY);
   };
 
+  onKeyDown = evt => {
+    // space
+    if (evt.keyCode === 32) {
+      this.props.gotoNextFrame();
+    }
+  };
+
   initBinds = () => {
     this.canvas.addEventListener('click', this.clickGrid);
     window.addEventListener('resize', this.onResize);
+    window.addEventListener('keydown', this.onKeyDown);
   };
 
   render() {

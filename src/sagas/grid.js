@@ -11,7 +11,8 @@ import { updateGrid, toggleCell } from '../actions/actions';
 import {
   createEmptyGrid,
   createFixtureGrid,
-  calcPixelToGridPosition
+  calcPixelToGridPosition,
+  calculateNextState
 } from '../helpers';
 import {
   getRows,
@@ -23,7 +24,7 @@ import {
 function* createStartGrid(action) {
   try {
     const rows = yield select(getRows);
-    const columns = yield select(getRows);
+    const columns = yield select(getColumns);
     const emptyGrid = createEmptyGrid(rows, columns);
     const fixtureGrid = createFixtureGrid(emptyGrid);
 
@@ -40,6 +41,14 @@ function* clickGrid(action) {
 
     // update store
     yield put(toggleCell(row, col));
+  } catch (e) {}
+}
+
+function* nextFrame() {
+  try {
+    const grid = yield select(getGrid);
+    const newGrid = calculateNextState(grid);
+    yield put(updateGrid(newGrid));
   } catch (e) {
     console.log(e);
   }
@@ -48,6 +57,7 @@ function* clickGrid(action) {
 function* load() {
   yield takeEvery(ACTIONS.CREATE_EMPTY_GRID, createStartGrid);
   yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
+  yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
 }
 
 export default load;

@@ -33,3 +33,7 @@ export const toggleCell = (row, col) => ({
     col
   }
 });
+
+export const gotoNextFrame = () => ({
+  type: ACTIONS.NEXT_FRAME
+});

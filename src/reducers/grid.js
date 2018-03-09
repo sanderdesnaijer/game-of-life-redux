@@ -3,7 +3,7 @@ import ACTIONS from '../constants/actions';
 const initialState = {
   context: null,
   cellSize: 25,
-  rows: 20,
+  rows: 10,
   columns: 20,
   grid: []
 };
@@ -43,8 +43,9 @@ const gridReducer = (state = initialState, action) => {
       const grid = state.grid.map((gRow, rowI) =>
         gRow.map((gCol, colI) => {
           if (col === colI && row == rowI) {
-            const alive = state.grid[colI][rowI];
-            return !alive;
+            const alive = state.grid[rowI][colI];
+
+            return alive === 1 ? 0 : 1;
           }
           return gCol;
         })
