@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Input extends Component {
+class InputNumber extends Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     onChange: PropTypes.func,
@@ -33,6 +33,7 @@ class Input extends Component {
     });
 
     if (this.props.onChange) {
+      const returnValue = parseInt(value, 0);
       this.props.onChange(returnValue);
     }
   };
@@ -42,7 +43,7 @@ class Input extends Component {
       <div className="input input--number">
         <span>{this.props.label}</span>
         <input
-          type="text"
+          type="number"
           placeholder={this.props.label}
           value={this.state.value}
           onChange={this.onChange}
@@ -52,4 +53,4 @@ class Input extends Component {
   }
 }
 
-export default Input;
+export default InputNumber;

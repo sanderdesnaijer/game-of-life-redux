@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getColumns, getRows, isPlaying } from '../reducers/grid';
 import Input from '../components/Input';
+import InputNumber from '../components/InputNumber';
 import Button from '../components/Button';
 import { changeRows, changeColumns, togglePlay } from '../actions/actions';
 
@@ -35,19 +36,19 @@ class Controls extends Component {
   render() {
     return (
       <div className="controls">
-        <Input
+        <InputNumber
           label="Rows"
           value={this.props.rows}
           onChange={this.onChangeRows}
         />
 
-        <Input
+        <InputNumber
           label="Columns"
           value={this.props.columns}
           onChange={this.onChangeColumns}
         />
 
-        <Input value={25} label="size" />
+        <InputNumber value={25} label="size" />
 
         <Input value="red" type="text" label="Color" />
 

@@ -70,7 +70,7 @@ class Canvas extends Component {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
         const alive = grid[r][c];
-        const color = alive ? '#FF0000' : '#FFFFFF';
+        const color = alive ? '#F00F04' : '#FFFFFF';
 
         const x = c * cellSize;
         const y = r * cellSize;
