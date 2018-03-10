@@ -11,7 +11,7 @@ class Input extends Component {
   };
 
   static defaultProps = {
-    max: 50,
+    max: 6,
     min: 0
   };
 

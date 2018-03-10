@@ -3,7 +3,7 @@ import ACTIONS from '../constants/actions';
 const initialState = {
   context: null,
   cellSize: 25,
-  rows: 10,
+  rows: 20,
   columns: 20,
   grid: [],
   playing: false

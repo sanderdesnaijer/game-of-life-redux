@@ -1,3 +1,5 @@
+import FIXTURES from '../constants/fixture';
+
 export function createEmptyGrid(rows, columns, value = 0) {
   let grid = [];
   for (let r = 0; r < rows; r++) {
@@ -11,23 +13,7 @@ export function createEmptyGrid(rows, columns, value = 0) {
 
 export function createFixtureGrid(gridToFill) {
   const grid = [...gridToFill];
-  const firstFillers = [
-    [2, 3],
-    [2, 15],
-    [3, 4],
-    [3, 16],
-    [4, 2],
-    [4, 3],
-    [4, 4],
-    [4, 14],
-    [4, 15],
-    [4, 16],
-    [5, 8],
-    [6, 9],
-    [7, 7],
-    [7, 8],
-    [7, 9]
-  ];
+  const firstFillers = FIXTURES;
 
   firstFillers.map(filler => {
     const fillerRow = filler[0];

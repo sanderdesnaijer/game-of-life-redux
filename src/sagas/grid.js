@@ -91,10 +91,8 @@ function* changeDimensions(action) {
 
   const newGrid = recalcGrid(emptyGrid, grid);
 
-  // strore
+  // store
   yield put(updateGrid(newGrid));
-  console.log(rows, columns);
-  console.log(newGrid);
 }
 
 function* load() {
@@ -102,8 +100,10 @@ function* load() {
   yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
   yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
   yield takeEvery(ACTIONS.COPY_GRID, copyGrid);
-  yield takeEvery(ACTIONS.CHANGE_COLUMNS, changeDimensions);
-  yield takeEvery(ACTIONS.CHANGE_ROWS, changeDimensions);
+  yield takeEvery(
+    [ACTIONS.CHANGE_COLUMNS, ACTIONS.CHANGE_ROWS],
+    changeDimensions
+  );
 }
 
 export default load;
