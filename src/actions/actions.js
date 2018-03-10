@@ -37,3 +37,28 @@ export const toggleCell = (row, col) => ({
 export const gotoNextFrame = () => ({
   type: ACTIONS.NEXT_FRAME
 });
+
+export const copyGrid = () => ({
+  type: ACTIONS.COPY_GRID
+});
+
+export const changeRows = rows => ({
+  type: ACTIONS.CHANGE_ROWS,
+  payload: {
+    rows
+  }
+});
+
+export const changeColumns = columns => ({
+  type: ACTIONS.CHANGE_COLUMNS,
+  payload: {
+    columns
+  }
+});
+
+export const togglePlay = playing => ({
+  type: ACTIONS.TOGGLE_PLAY,
+  payload: {
+    playing
+  }
+});

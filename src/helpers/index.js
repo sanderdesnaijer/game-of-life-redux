@@ -11,7 +11,23 @@ export function createEmptyGrid(rows, columns, value = 0) {
 
 export function createFixtureGrid(gridToFill) {
   const grid = [...gridToFill];
-  const firstFillers = [[0, 1], [0, 2], [0, 3], [2, 4], [3, 4], [4, 4]];
+  const firstFillers = [
+    [2, 3],
+    [2, 15],
+    [3, 4],
+    [3, 16],
+    [4, 2],
+    [4, 3],
+    [4, 4],
+    [4, 14],
+    [4, 15],
+    [4, 16],
+    [5, 8],
+    [6, 9],
+    [7, 7],
+    [7, 8],
+    [7, 9]
+  ];
 
   firstFillers.map(filler => {
     const fillerRow = filler[0];
@@ -32,7 +48,7 @@ export function calcPixelToGridPosition(
   const width = totalColumns * celSize;
   const height = totalRows * celSize;
 
-  // out of grid
+  // col
   if (x > width || y > height) {
     return {
       row: null,
@@ -70,6 +86,7 @@ function calcNeighbour(row, col, grid) {
   return grid[nextRow][nextCol];
 }
 
+// check every neighbours and calc score
 export function calculateNextState(grid) {
   return grid.reduce((list, row, rowIndex) => {
     const newRows = row.map((alive, colIndex) => {
@@ -100,7 +117,7 @@ export function calculateNextState(grid) {
   }, []);
 }
 
-// Game Of Life rules
+// Game of Life rules
 function isAlive(totalNeighbours, alive) {
   if (alive) {
     // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
@@ -116,4 +133,18 @@ function isAlive(totalNeighbours, alive) {
     // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction
     return totalNeighbours === 3;
   }
+}
+
+// update empty grid with old grid
+export function recalcGrid(emptyGrid, filledGrid) {
+  const checkedGrid = emptyGrid.map((row, rowIndex) => {
+    return row.map((col, colIndex) => {
+      // if doesnt exist just retun 0
+      if (!filledGrid[rowIndex] || !filledGrid[rowIndex][colIndex]) {
+        return 0;
+      }
+      return filledGrid[rowIndex][colIndex];
+    });
+  });
+  return checkedGrid;
 }

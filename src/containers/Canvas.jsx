@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getGrid, getCellSize } from '../reducers/grid';
+import KEYS from '../constants/keys';
 
-import { registerContext, clickGrid, gotoNextFrame } from '../actions/actions';
+import {
+  registerContext,
+  clickGrid,
+  gotoNextFrame,
+  copyGrid
+} from '../actions/actions';
 
 const enhance = connect(
   store => ({
@@ -12,7 +18,8 @@ const enhance = connect(
   {
     registerContext,
     clickGrid,
-    gotoNextFrame
+    gotoNextFrame,
+    copyGrid
   }
 );
 
@@ -32,7 +39,16 @@ class Canvas extends Component {
 
   componentDidMount() {
     this.setContext();
-    this.initBinds();
+
+    this.canvas.addEventListener('click', this.clickGrid);
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    this.canvas.removeEventListener('click', this.clickGrid);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onKeyDown);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,9 +57,15 @@ class Canvas extends Component {
     }
   }
 
+  clearGrid() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  }
+
   drawGrid(grid) {
     const context = this.ctx;
     const cellSize = this.props.cellSize;
+
+    this.clearGrid();
 
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
@@ -85,15 +107,13 @@ class Canvas extends Component {
 
   onKeyDown = evt => {
     // space
-    if (evt.keyCode === 32) {
+    if (evt.keyCode === KEYS.SPACE) {
       this.props.gotoNextFrame();
     }
-  };
-
-  initBinds = () => {
-    this.canvas.addEventListener('click', this.clickGrid);
-    window.addEventListener('resize', this.onResize);
-    window.addEventListener('keydown', this.onKeyDown);
+    // c
+    if (evt.keyCode === KEYS.C) {
+      this.props.copyGrid();
+    }
   };
 
   render() {

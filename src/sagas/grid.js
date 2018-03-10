@@ -12,7 +12,8 @@ import {
   createEmptyGrid,
   createFixtureGrid,
   calcPixelToGridPosition,
-  calculateNextState
+  calculateNextState,
+  recalcGrid
 } from '../helpers';
 import {
   getRows,
@@ -23,14 +24,15 @@ import {
 
 function* createStartGrid(action) {
   try {
-    const rows = yield select(getRows);
-    const columns = yield select(getColumns);
+    const { rows, columns } = yield select(getGridPosition);
     const emptyGrid = createEmptyGrid(rows, columns);
     const fixtureGrid = createFixtureGrid(emptyGrid);
 
     // update store
     yield put(updateGrid(fixtureGrid));
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function* clickGrid(action) {
@@ -40,7 +42,9 @@ function* clickGrid(action) {
     const { row, col } = calcPixelToGridPosition(x, y, columns, rows, cellSize);
 
     // update store
-    yield put(toggleCell(row, col));
+    if (row || col) {
+      yield put(toggleCell(row, col));
+    }
   } catch (e) {}
 }
 
@@ -48,16 +52,58 @@ function* nextFrame() {
   try {
     const grid = yield select(getGrid);
     const newGrid = calculateNextState(grid);
+
+    // update store
     yield put(updateGrid(newGrid));
   } catch (e) {
     console.log(e);
   }
 }
 
+function* copyGrid() {
+  try {
+    const grid = yield select(getGrid);
+
+    const filtered = grid.reduce((list, row, rowI) => {
+      const t = row.map((col, colI) => {
+        if (col) {
+          list.push([rowI, colI]);
+        }
+      });
+      return list;
+    }, []);
+
+    let string = '';
+    filtered.map((row, rowI) => {
+      string = `${string}[${row[0]},${row[1]}],`;
+    });
+    string = `[${string}]`;
+    console.log(string);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* changeDimensions(action) {
+  const { rows, columns } = yield select(getGridPosition);
+  const emptyGrid = createEmptyGrid(rows, columns);
+  const grid = yield select(getGrid);
+
+  const newGrid = recalcGrid(emptyGrid, grid);
+
+  // strore
+  yield put(updateGrid(newGrid));
+  console.log(rows, columns);
+  console.log(newGrid);
+}
+
 function* load() {
   yield takeEvery(ACTIONS.CREATE_EMPTY_GRID, createStartGrid);
   yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
   yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
+  yield takeEvery(ACTIONS.COPY_GRID, copyGrid);
+  yield takeEvery(ACTIONS.CHANGE_COLUMNS, changeDimensions);
+  yield takeEvery(ACTIONS.CHANGE_ROWS, changeDimensions);
 }
 
 export default load;

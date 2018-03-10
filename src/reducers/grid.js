@@ -5,7 +5,8 @@ const initialState = {
   cellSize: 25,
   rows: 10,
   columns: 20,
-  grid: []
+  grid: [],
+  playing: false
 };
 
 export const getContext = store => store.gridReducer.context;
@@ -21,6 +22,7 @@ export const getGridPosition = store => {
     cellSize
   };
 };
+export const isPlaying = store => store.gridReducer.playing;
 
 const gridReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -53,6 +55,27 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         grid
+      };
+    }
+    case ACTIONS.CHANGE_COLUMNS: {
+      const { columns } = action.payload;
+      return {
+        ...state,
+        columns
+      };
+    }
+    case ACTIONS.CHANGE_ROWS: {
+      const { rows } = action.payload;
+      return {
+        ...state,
+        rows
+      };
+    }
+    case ACTIONS.TOGGLE_PLAY: {
+      const { playing } = action.payload;
+      return {
+        ...state,
+        playing
       };
     }
     default: {
