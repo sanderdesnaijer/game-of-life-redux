@@ -121,7 +121,7 @@ function isAlive(totalNeighbours, alive) {
   }
 }
 
-// update empty grid with old grid
+// update empty grid with new filled grid
 export function recalcGrid(emptyGrid, filledGrid) {
   const checkedGrid = emptyGrid.map((row, rowIndex) => {
     return row.map((col, colIndex) => {

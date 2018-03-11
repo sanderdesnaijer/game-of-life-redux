@@ -6,9 +6,9 @@ const initialState = {
   rows: 20,
   columns: 20,
   grid: [],
-  playing: false,
+  playing: true,
   cellColor: '#fff000',
-  fps: 520
+  fps: 10
 };
 
 export const getContext = store => store.gridReducer.context;

@@ -20,6 +20,7 @@ const enhance = connect(
 
 class Game extends Component {
   context: null;
+
   constructor(props) {
     super(props);
 
@@ -40,6 +41,9 @@ class Game extends Component {
   componentWillUpdate(nextProps, nextState) {
     const { isPlaying } = nextState;
     if (this.state.isPlaying !== isPlaying) {
+      this.setState({
+        isPlaying
+      });
       return isPlaying ? this.start() : this.stop();
     }
   }
@@ -53,12 +57,27 @@ class Game extends Component {
     this.stop();
   }
 
-  update = () => {
+  updateTime = newTime => {
     if (this.state.isPlaying) {
-      console.log(this.props.fps);
-      this.props.gotoNextFrame();
-      window.requestAnimationFrame(this.update);
+      const fpsInterval = 1000 / this.props.fps;
+
+      window.requestAnimationFrame(this.updateTime);
+
+      this.now = newTime;
+      this.elapsed = this.now - this.then;
+      // if enough time has elapsed, draw the next frame
+
+      if (this.elapsed > fpsInterval) {
+        this.then = this.now - this.elapsed % fpsInterval;
+
+        // draw stuff here
+        this.update();
+      }
     }
+  };
+
+  update = () => {
+    this.props.gotoNextFrame();
   };
 
   stop = () => {
@@ -68,7 +87,8 @@ class Game extends Component {
   };
 
   start = () => {
-    window.requestAnimationFrame(this.update);
+    this.then = window.performance.now();
+    window.requestAnimationFrame(this.updateTime);
   };
 
   render() {
