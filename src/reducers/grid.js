@@ -2,11 +2,12 @@ import ACTIONS from '../constants/actions';
 
 const initialState = {
   context: null,
-  cellSize: 25,
+  cellSize: 20,
   rows: 20,
   columns: 20,
   grid: [],
-  playing: false
+  playing: false,
+  cellColor: '#fff000'
 };
 
 export const getContext = store => store.gridReducer.context;
@@ -14,6 +15,7 @@ export const getRows = store => store.gridReducer.rows;
 export const getColumns = store => store.gridReducer.columns;
 export const getGrid = store => store.gridReducer.grid;
 export const getCellSize = store => store.gridReducer.cellSize;
+export const getCellColor = store => store.gridReducer.cellColor;
 export const getGridPosition = store => {
   const { rows, columns, cellSize } = store.gridReducer;
   return {
@@ -76,6 +78,20 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         playing
+      };
+    }
+    case ACTIONS.CHANGE_CELL_SIZE: {
+      const { cellSize } = action.payload;
+      return {
+        ...state,
+        cellSize
+      };
+    }
+    case ACTIONS.CHANGE_CELL_COLOR: {
+      const { cellColor } = action.payload;
+      return {
+        ...state,
+        cellColor
       };
     }
     default: {

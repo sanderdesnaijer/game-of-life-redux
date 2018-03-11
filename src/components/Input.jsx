@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { isValidHex } from '../helpers';
+
 class Input extends Component {
   static propTypes = {
     value: PropTypes.string,
-    max: PropTypes.number,
-    min: PropTypes.number,
     onChange: PropTypes.func,
-    label: PropTypes.string
+    label: PropTypes.string,
+    validate: PropTypes.string
   };
-
-  static defaultProps = {
-    max: 6,
-    min: 0
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -24,16 +19,20 @@ class Input extends Component {
 
   onChange = event => {
     const { value } = event.target;
-    const { max, min } = this.props;
-
-    if (value > max || value < min) return;
+    const { validate } = this.props;
 
     this.setState({
       value
     });
 
+    if (validate && validate === 'hex') {
+      if (!isValidHex(value)) {
+        return;
+      }
+    }
+
     if (this.props.onChange) {
-      this.props.onChange(returnValue);
+      this.props.onChange(value);
     }
   };
 

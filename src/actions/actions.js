@@ -62,3 +62,17 @@ export const togglePlay = playing => ({
     playing
   }
 });
+
+export const changeCellSize = cellSize => ({
+  type: ACTIONS.CHANGE_CELL_SIZE,
+  payload: {
+    cellSize
+  }
+});
+
+export const changeCellColor = cellColor => ({
+  type: ACTIONS.CHANGE_CELL_COLOR,
+  payload: {
+    cellColor
+  }
+});

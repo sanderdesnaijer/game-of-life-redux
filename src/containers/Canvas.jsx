@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getGrid, getCellSize } from '../reducers/grid';
+import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
 import KEYS from '../constants/keys';
 
 import {
@@ -13,7 +13,8 @@ import {
 const enhance = connect(
   store => ({
     grid: getGrid(store),
-    cellSize: getCellSize(store)
+    cellSize: getCellSize(store),
+    cellColor: getCellColor(store)
   }),
   {
     registerContext,
@@ -26,14 +27,6 @@ const enhance = connect(
 class Canvas extends Component {
   canvas = null;
   ctx = null;
-
-  constructor() {
-    super();
-    this.state = {
-      width: null,
-      height: null
-    };
-  }
 
   registerDom = canvas => (this.canvas = canvas);
 
@@ -51,9 +44,13 @@ class Canvas extends Component {
     window.removeEventListener('keydown', this.onKeyDown);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.grid !== nextProps.grid) {
-      this.drawGrid(nextProps.grid);
+  componentDidUpdate(nextProps) {
+    if (
+      this.props.grid !== nextProps.grid ||
+      this.props.cellColor !== nextProps.cellColor ||
+      this.props.cellSize !== nextProps.cellSize
+    ) {
+      this.drawGrid();
     }
   }
 
@@ -61,7 +58,8 @@ class Canvas extends Component {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  drawGrid(grid) {
+  drawGrid() {
+    const grid = this.props.grid;
     const context = this.ctx;
     const cellSize = this.props.cellSize;
 
@@ -70,7 +68,7 @@ class Canvas extends Component {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
         const alive = grid[r][c];
-        const color = alive ? '#F00F04' : '#FFFFFF';
+        const color = alive ? this.props.cellColor : '#FFFFFF';
 
         const x = c * cellSize;
         const y = r * cellSize;
