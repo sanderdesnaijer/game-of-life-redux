@@ -21,7 +21,8 @@ import {
   changeCellColor,
   resetGrid,
   changeFps,
-  randomizeGrid
+  randomizeGrid,
+  gotoNextFrame
 } from '../actions/actions';
 
 const enhance = connect(
@@ -41,7 +42,8 @@ const enhance = connect(
     changeCellColor,
     resetGrid,
     changeFps,
-    randomizeGrid
+    randomizeGrid,
+    gotoNextFrame
   }
 );
 
@@ -92,6 +94,8 @@ class Controls extends React.Component {
         <Button label="reset" onClick={this.props.resetGrid} />
 
         <Button label="randomize" onClick={this.props.randomizeGrid} />
+
+        <Button label="next" onClick={this.props.gotoNextFrame} />
       </div>
     );
   }

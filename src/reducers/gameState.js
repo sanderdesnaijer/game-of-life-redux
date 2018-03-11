@@ -1,7 +1,7 @@
 import ACTIONS from '../constants/actions';
 
 const initialState = {
-  playing: true,
+  playing: false,
   fps: 10
 };
 
