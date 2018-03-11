@@ -1,8 +1,10 @@
-//@ flow
+// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
-import { getRows, isPlaying, getFps } from '../reducers/grid';
+import { getRows } from '../reducers/grid';
+
+import { isPlaying, getFps } from '../reducers/gameState';
 import { createEmptyGrid, gotoNextFrame } from '../actions/actions';
 import Canvas from './Canvas';
 
@@ -58,6 +60,8 @@ class Game extends React.Component<Props, State> {
 
   componentDidMount() {
     this.start();
+
+    console.log(this.props.isPlaying);
 
     this.props.createEmptyGrid();
   }

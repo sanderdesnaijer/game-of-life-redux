@@ -1,15 +1,14 @@
-// @flow 
+// @flow
 import * as React from 'react';
 
 import { connect } from 'react-redux';
 import {
   getColumns,
   getRows,
-  isPlaying,
   getCellSize,
-  getCellColor,
-  getFps
+  getCellColor
 } from '../reducers/grid';
+import { isPlaying, getFps } from '../reducers/gameState';
 import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
 import ToggleButton from '../components/ToggleButton';
