@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import { isValidHex } from '../helpers';
 
-class Input extends Component {
+class Input extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,

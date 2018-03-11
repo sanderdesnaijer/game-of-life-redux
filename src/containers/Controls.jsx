@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// @flow 
+import * as React from 'react';
 
 import { connect } from 'react-redux';
 import {
@@ -45,7 +46,7 @@ const enhance = connect(
   }
 );
 
-class Controls extends Component {
+class Controls extends React.Component {
   render() {
     return (
       <div className="controls">

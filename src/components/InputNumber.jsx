@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 
-class InputNumber extends Component {
+class InputNumber extends React.Component {
   static propTypes = {
     value: PropTypes.number,
     max: PropTypes.number,

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
 import KEYS from '../constants/keys';
@@ -24,7 +25,7 @@ const enhance = connect(
   }
 );
 
-class Canvas extends Component {
+class Canvas extends React.Component {
   canvas = null;
   ctx = null;
 

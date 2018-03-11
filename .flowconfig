@@ -1,0 +1,18 @@
+[ignore]
+
+
+
+[include]
+
+[libs]
+src/types/libs/
+
+[lints]
+
+[options]
+module.name_mapper='.*\(.css\)' -> 'CSSModule'
+module.system=haste
+
+# module.file_ext=.scss
+
+[strict]

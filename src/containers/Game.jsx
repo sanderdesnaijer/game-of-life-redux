@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+//@ flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import { getRows, isPlaying, getFps } from '../reducers/grid';
 import { createEmptyGrid, gotoNextFrame } from '../actions/actions';
 import Canvas from './Canvas';
-//import Game from '../helpers/game';
 
 const enhance = connect(
   store => ({
@@ -18,7 +18,15 @@ const enhance = connect(
   }
 );
 
-class Game extends Component {
+type Props = {
+  isPlaying: boolean
+};
+
+type State = {
+  isPlaying: boolean
+};
+
+class Game extends React.Component<Props, State> {
   context: null;
 
   constructor(props) {
@@ -38,7 +46,7 @@ class Game extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: Props, nextState: State) {
     const { isPlaying } = nextState;
     if (this.state.isPlaying !== isPlaying) {
       this.setState({
@@ -50,6 +58,7 @@ class Game extends Component {
 
   componentDidMount() {
     this.start();
+
     this.props.createEmptyGrid();
   }
 
@@ -82,7 +91,7 @@ class Game extends Component {
 
   stop = () => {
     this.setState({
-      playing: false
+      isPlaying: false
     });
   };
 
