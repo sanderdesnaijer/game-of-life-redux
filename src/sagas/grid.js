@@ -1,3 +1,4 @@
+import { ActionCreators } from 'redux-undo';
 import {
   call,
   put,
@@ -28,6 +29,8 @@ import {
   getGridPosition,
   getGridState
 } from '../reducers/grid';
+
+import { getCurrentFrame } from '../reducers/gameState';
 
 function* createStartGrid(action) {
   try {
@@ -66,7 +69,7 @@ function* clickGrid(action) {
     const { row, col } = calcPixelToGridPosition(x, y, columns, rows, cellSize);
 
     // update store
-    if (row || col) {
+    if (row !== null || col !== null) {
       yield put(toggleCell(row, col));
     }
   } catch (e) {}
@@ -82,6 +85,11 @@ function* nextFrame() {
   } catch (e) {
     console.log(e);
   }
+}
+
+function* prevFrame() {
+  const t = yield put(ActionCreators.undo());
+  console.log(t);
 }
 
 function* copyGrid(action) {
@@ -132,6 +140,7 @@ function* load() {
     changeDimensions
   );
   yield takeEvery(ACTIONS.SAVE_GRID, saveGrid);
+  yield takeEvery(ACTIONS.PREV_FRAME, prevFrame);
 }
 
 export default load;

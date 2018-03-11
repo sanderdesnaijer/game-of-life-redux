@@ -23,6 +23,7 @@ import {
   changeFps,
   randomizeGrid,
   gotoNextFrame,
+  gotoPreviousFrame,
   saveGrid
 } from '../actions/actions';
 
@@ -45,11 +46,20 @@ const enhance = connect(
     changeFps,
     randomizeGrid,
     gotoNextFrame,
+    gotoPreviousFrame,
     saveGrid
   }
 );
 
 class Controls extends React.Component {
+  onGotoNextFrame = () => {
+    this.props.gotoNextFrame();
+  };
+
+  onGotoPreviousFrame = () => {
+    this.props.gotoPreviousFrame();
+  };
+
   render() {
     return (
       <div className="controls">
@@ -97,7 +107,8 @@ class Controls extends React.Component {
 
         <Button label="randomize" onClick={this.props.randomizeGrid} />
 
-        <Button label="next" onClick={this.props.gotoNextFrame} />
+        <Button label="next" onClick={this.onGotoNextFrame} />
+        <Button label="prev" onClick={this.onGotoPreviousFrame} />
 
         <Button label="save" onClick={this.props.saveGrid} />
       </div>

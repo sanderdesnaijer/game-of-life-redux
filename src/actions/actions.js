@@ -53,8 +53,18 @@ export const toggleCell = (row, col) => ({
   }
 });
 
-export const gotoNextFrame = () => ({
-  type: ACTIONS.NEXT_FRAME
+export const gotoNextFrame = nextFrame => ({
+  type: ACTIONS.NEXT_FRAME,
+  payload: {
+    nextFrame
+  }
+});
+
+export const gotoPreviousFrame = previousFrame => ({
+  type: ACTIONS.PREV_FRAME,
+  payload: {
+    previousFrame
+  }
 });
 
 export const changeRows = rows => ({

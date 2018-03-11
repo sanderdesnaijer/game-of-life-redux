@@ -1,12 +1,15 @@
 import ACTIONS from '../constants/actions';
 
 const initialState = {
-  playing: true,
-  fps: 20
+  playing: false,
+  fps: 20,
+  totalFrames: 0,
+  currentFrame: 0
 };
 
 export const getFps = store => store.gameStateReducer.fps;
 export const isPlaying = store => store.gameStateReducer.playing;
+export const getCurrentFrame = store => store.gameStateReducer.currentFrame;
 
 const gameStateReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -22,6 +25,14 @@ const gameStateReducer = (state = initialState, action) => {
       return {
         ...state,
         fps
+      };
+    }
+    case ACTIONS.NEXT_FRAME: {
+      const nextFrame = state.currentFrame + 1;
+      return {
+        ...state,
+        currentFrame: nextFrame,
+        totalFrames: nextFrame
       };
     }
     default: {

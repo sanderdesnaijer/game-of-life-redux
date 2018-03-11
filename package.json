@@ -7,8 +7,7 @@
     "start": "webpack-dev-server --config ./webpack.config.js",
     "test": "jest ./src",
     "flow-status": "flow status",
-    "flow-coverage":
-      "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -x 'src/test/**'"
+    "flow-coverage": "flow-coverage-report -i 'src/**/*.js' -i 'src/**/*.jsx' -x 'src/test/**'"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./src/enzyme.setup.js"
@@ -51,6 +50,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "redux-undo": "^1.0.0-beta9-9-7"
   }
 }

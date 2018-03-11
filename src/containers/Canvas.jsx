@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
+import { getCurrentFrame } from '../reducers/gameState';
 import KEYS from '../constants/keys';
 
 import {
@@ -46,6 +47,7 @@ class Canvas extends React.Component {
   }
 
   componentDidUpdate(nextProps) {
+    //console.log(this.props.grid, nextProps.grid);
     if (
       this.props.grid !== nextProps.grid ||
       this.props.cellColor !== nextProps.cellColor ||
@@ -63,7 +65,7 @@ class Canvas extends React.Component {
     const grid = this.props.grid;
     const context = this.ctx;
     const cellSize = this.props.cellSize;
-
+    console.log('grid', grid);
     this.clearGrid();
 
     for (let r = 0; r < grid.length; r++) {

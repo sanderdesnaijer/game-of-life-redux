@@ -9,14 +9,14 @@ const initialState = {
   cellColor: '#66D'
 };
 
-export const getGridState = store => store.gridReducer;
-export const getRows = store => store.gridReducer.rows;
-export const getColumns = store => store.gridReducer.columns;
-export const getGrid = store => store.gridReducer.grid;
-export const getCellSize = store => store.gridReducer.cellSize;
-export const getCellColor = store => store.gridReducer.cellColor;
+export const getGridState = store => store.gridReducer.present;
+export const getRows = store => store.gridReducer.present.rows;
+export const getColumns = store => store.gridReducer.present.columns;
+export const getGrid = store => store.gridReducer.present.grid;
+export const getCellSize = store => store.gridReducer.present.cellSize;
+export const getCellColor = store => store.gridReducer.present.cellColor;
 export const getGridPosition = store => {
-  const { rows, columns, cellSize } = store.gridReducer;
+  const { rows, columns, cellSize } = store.gridReducer.present;
   return {
     rows,
     columns,
