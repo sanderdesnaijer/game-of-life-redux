@@ -61,8 +61,6 @@ class Game extends React.Component<Props, State> {
   componentDidMount() {
     this.start();
 
-    console.log(this.props.isPlaying);
-
     this.props.createEmptyGrid();
   }
 

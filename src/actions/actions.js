@@ -19,6 +19,24 @@ export const updateGrid = grid => ({
   }
 });
 
+export const saveGrid = () => ({
+  type: ACTIONS.SAVE_GRID
+});
+
+export const loadGrid = grid => ({
+  type: ACTIONS.LOAD_GRID,
+  payload: {
+    grid
+  }
+});
+
+export const copyGrid = grid => ({
+  type: ACTIONS.COPY_GRID,
+  payload: {
+    grid
+  }
+});
+
 export const randomizeGrid = grid => ({
   type: ACTIONS.RANDOMIZE_GRID
 });
@@ -37,10 +55,6 @@ export const toggleCell = (row, col) => ({
 
 export const gotoNextFrame = () => ({
   type: ACTIONS.NEXT_FRAME
-});
-
-export const copyGrid = () => ({
-  type: ACTIONS.COPY_GRID
 });
 
 export const changeRows = rows => ({

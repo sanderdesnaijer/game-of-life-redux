@@ -1,3 +1,4 @@
+// @flow
 import ACTIONS from '../constants/actions';
 
 const initialState = {
@@ -5,10 +6,10 @@ const initialState = {
   rows: 20,
   columns: 20,
   grid: [],
-  cellColor: '#fff000'
+  cellColor: '#66D'
 };
 
-export const getContext = store => store.gridReducer.context;
+export const getGridState = store => store.gridReducer;
 export const getRows = store => store.gridReducer.rows;
 export const getColumns = store => store.gridReducer.columns;
 export const getGrid = store => store.gridReducer.grid;
@@ -25,6 +26,12 @@ export const getGridPosition = store => {
 
 const gridReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.LOAD_GRID: {
+      const { grid } = action.payload;
+      return {
+        ...grid
+      };
+    }
     case ACTIONS.UPDATE_GRID: {
       const { grid } = action.payload;
       return {

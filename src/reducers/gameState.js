@@ -1,8 +1,8 @@
 import ACTIONS from '../constants/actions';
 
 const initialState = {
-  playing: false,
-  fps: 10
+  playing: true,
+  fps: 20
 };
 
 export const getFps = store => store.gameStateReducer.fps;

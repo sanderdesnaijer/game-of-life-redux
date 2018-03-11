@@ -111,7 +111,7 @@ class Canvas extends React.Component {
     }
     // c
     if (evt.keyCode === KEYS.C) {
-      this.props.copyGrid();
+      this.props.copyGrid(this.props.grid);
     }
   };
 

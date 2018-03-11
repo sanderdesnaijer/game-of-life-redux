@@ -7,7 +7,12 @@ import {
   take
 } from 'redux-saga/effects';
 import ACTIONS from '../constants/actions';
-import { updateGrid, toggleCell } from '../actions/actions';
+import {
+  updateGrid,
+  toggleCell,
+  loadGrid,
+  copyGrid as copyGridAction
+} from '../actions/actions';
 import {
   createEmptyGrid,
   createFixtureGrid,
@@ -15,21 +20,40 @@ import {
   calculateNextState,
   recalcGrid
 } from '../helpers';
+import { loadState, saveState } from '../helpers/localStorage';
 import {
   getRows,
   getColumns,
   getGrid,
-  getGridPosition
+  getGridPosition,
+  getGridState
 } from '../reducers/grid';
 
 function* createStartGrid(action) {
   try {
-    const { rows, columns } = yield select(getGridPosition);
-    const emptyGrid = createEmptyGrid(rows, columns);
-    const fixtureGrid = createFixtureGrid(emptyGrid);
+    const storedState = loadState();
 
-    // update store
-    yield put(updateGrid(fixtureGrid));
+    if (storedState) {
+      yield put(loadGrid(storedState));
+    } else {
+      // create fixture data
+      const { rows, columns } = yield select(getGridPosition);
+      const emptyGrid = createEmptyGrid(rows, columns);
+      const fixtureGrid = createFixtureGrid(emptyGrid);
+
+      // update store
+      yield put(updateGrid(fixtureGrid));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* saveGrid() {
+  try {
+    const currentState = yield select(getGridState);
+    saveState(currentState);
+    yield put(copyGridAction(currentState.grid));
   } catch (e) {
     console.log(e);
   }
@@ -60,9 +84,9 @@ function* nextFrame() {
   }
 }
 
-function* copyGrid() {
+function* copyGrid(action) {
   try {
-    const grid = yield select(getGrid);
+    const { grid } = action.payload;
 
     const filtered = grid.reduce((list, row, rowI) => {
       const t = row.map((col, colI) => {
@@ -107,6 +131,7 @@ function* load() {
     [ACTIONS.CHANGE_COLUMNS, ACTIONS.CHANGE_ROWS],
     changeDimensions
   );
+  yield takeEvery(ACTIONS.SAVE_GRID, saveGrid);
 }
 
 export default load;
