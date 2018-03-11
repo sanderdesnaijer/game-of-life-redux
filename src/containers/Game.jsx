@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getRows, isPlaying } from '../reducers/grid';
+import { debounce } from 'lodash';
+import { getRows, isPlaying, getFps } from '../reducers/grid';
 import { createEmptyGrid, gotoNextFrame } from '../actions/actions';
 import Canvas from './Canvas';
 //import Game from '../helpers/game';
@@ -8,7 +9,8 @@ import Canvas from './Canvas';
 const enhance = connect(
   store => ({
     rows: getRows(store),
-    isPlaying: isPlaying(store)
+    isPlaying: isPlaying(store),
+    fps: getFps(store)
   }),
   {
     createEmptyGrid,
@@ -53,6 +55,7 @@ class Game extends Component {
 
   update = () => {
     if (this.state.isPlaying) {
+      console.log(this.props.fps);
       this.props.gotoNextFrame();
       window.requestAnimationFrame(this.update);
     }

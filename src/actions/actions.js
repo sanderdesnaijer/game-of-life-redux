@@ -26,6 +26,10 @@ export const updateGrid = grid => ({
   }
 });
 
+export const resetGrid = () => ({
+  type: ACTIONS.RESET_GRID
+});
+
 export const toggleCell = (row, col) => ({
   type: ACTIONS.TOGGLE_CELL,
   payload: {
@@ -74,5 +78,12 @@ export const changeCellColor = cellColor => ({
   type: ACTIONS.CHANGE_CELL_COLOR,
   payload: {
     cellColor
+  }
+});
+
+export const changeFps = fps => ({
+  type: ACTIONS.CHANGE_FPS,
+  payload: {
+    fps
   }
 });

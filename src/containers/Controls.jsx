@@ -6,17 +6,21 @@ import {
   getRows,
   isPlaying,
   getCellSize,
-  getCellColor
+  getCellColor,
+  getFps
 } from '../reducers/grid';
 import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
+import ToggleButton from '../components/ToggleButton';
 import Button from '../components/Button';
 import {
   changeRows,
   changeColumns,
   togglePlay,
   changeCellSize,
-  changeCellColor
+  changeCellColor,
+  resetGrid,
+  changeFps
 } from '../actions/actions';
 
 const enhance = connect(
@@ -25,14 +29,17 @@ const enhance = connect(
     columns: getColumns(store),
     isPlaying: isPlaying(store),
     cellSize: getCellSize(store),
-    cellColor: getCellColor(store)
+    cellColor: getCellColor(store),
+    fps: getFps(store)
   }),
   {
     changeRows,
     changeColumns,
     togglePlay,
     changeCellSize,
-    changeCellColor
+    changeCellColor,
+    resetGrid,
+    changeFps
   }
 );
 
@@ -66,12 +73,21 @@ class Controls extends Component {
           onChange={this.props.changeCellColor}
         />
 
-        <Button
+        <InputNumber
+          label="FPS"
+          max={1000}
+          value={this.props.fps}
+          onChange={this.props.changeFps}
+        />
+
+        <ToggleButton
           activeLabel="on"
           inActiveLabel="off"
           isActive={this.props.isPlaying}
           onClick={this.props.togglePlay}
         />
+
+        <Button label="reset" onClick={this.props.resetGrid} />
       </div>
     );
   }

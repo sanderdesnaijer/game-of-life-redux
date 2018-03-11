@@ -7,7 +7,8 @@ const initialState = {
   columns: 20,
   grid: [],
   playing: false,
-  cellColor: '#fff000'
+  cellColor: '#fff000',
+  fps: 520
 };
 
 export const getContext = store => store.gridReducer.context;
@@ -16,6 +17,7 @@ export const getColumns = store => store.gridReducer.columns;
 export const getGrid = store => store.gridReducer.grid;
 export const getCellSize = store => store.gridReducer.cellSize;
 export const getCellColor = store => store.gridReducer.cellColor;
+export const getFps = store => store.gridReducer.fps;
 export const getGridPosition = store => {
   const { rows, columns, cellSize } = store.gridReducer;
   return {
@@ -94,6 +96,14 @@ const gridReducer = (state = initialState, action) => {
         cellColor
       };
     }
+    case ACTIONS.CHANGE_FPS: {
+      const { fps } = action.payload;
+      return {
+        ...state,
+        fps
+      };
+    }
+
     default: {
       return state;
     }

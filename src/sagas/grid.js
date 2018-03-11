@@ -96,7 +96,10 @@ function* changeDimensions(action) {
 }
 
 function* load() {
-  yield takeEvery(ACTIONS.CREATE_EMPTY_GRID, createStartGrid);
+  yield takeEvery(
+    [ACTIONS.CREATE_EMPTY_GRID, ACTIONS.RESET_GRID],
+    createStartGrid
+  );
   yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
   yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
   yield takeEvery(ACTIONS.COPY_GRID, copyGrid);

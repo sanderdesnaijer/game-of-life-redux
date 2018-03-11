@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 
-const Button = ({ activeLabel, inActiveLabel, isActive, onClick }) => {
-  const clickBtn = () => {
-    onClick(!isActive);
-  };
+const Button = ({ label, onClick }) => {
   return (
-    <div className="input input--button" onClick={clickBtn}>
-      <button>{isActive ? activeLabel : inActiveLabel}</button>
+    <div className="input input--button" onClick={onClick}>
+      <button>{label}</button>
     </div>
   );
 };
