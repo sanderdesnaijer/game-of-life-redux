@@ -30,13 +30,6 @@ export const isPlaying = store => store.gridReducer.playing;
 
 const gridReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ACTIONS.REGISTER_CONTEXT: {
-      const { context } = action.payload;
-      return {
-        ...state,
-        context
-      };
-    }
     case ACTIONS.UPDATE_GRID: {
       const { grid } = action.payload;
       return {
@@ -101,6 +94,15 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         fps
+      };
+    }
+    case ACTIONS.RANDOMIZE_GRID: {
+      const grid = state.grid.map(row =>
+        row.map(col => Math.round(Math.random()))
+      );
+      return {
+        ...state,
+        grid
       };
     }
 

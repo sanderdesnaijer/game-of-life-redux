@@ -20,7 +20,8 @@ import {
   changeCellSize,
   changeCellColor,
   resetGrid,
-  changeFps
+  changeFps,
+  randomizeGrid
 } from '../actions/actions';
 
 const enhance = connect(
@@ -39,7 +40,8 @@ const enhance = connect(
     changeCellSize,
     changeCellColor,
     resetGrid,
-    changeFps
+    changeFps,
+    randomizeGrid
   }
 );
 
@@ -81,13 +83,15 @@ class Controls extends Component {
         />
 
         <ToggleButton
-          activeLabel="on"
-          inActiveLabel="off"
+          activeLabel="off"
+          inActiveLabel="on"
           isActive={this.props.isPlaying}
           onClick={this.props.togglePlay}
         />
 
         <Button label="reset" onClick={this.props.resetGrid} />
+
+        <Button label="randomize" onClick={this.props.randomizeGrid} />
       </div>
     );
   }
