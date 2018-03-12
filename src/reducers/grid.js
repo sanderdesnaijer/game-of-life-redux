@@ -6,7 +6,7 @@ const initialState = {
   rows: 20,
   columns: 20,
   grid: [],
-  cellColor: '#66D'
+  cellColor: '#66D',
 };
 
 export const getGridState = store => store.gridReducer.present;
@@ -20,7 +20,7 @@ export const getGridPosition = store => {
   return {
     rows,
     columns,
-    cellSize
+    cellSize,
   };
 };
 
@@ -29,14 +29,14 @@ const gridReducer = (state = initialState, action) => {
     case ACTIONS.LOAD_GRID: {
       const { grid } = action.payload;
       return {
-        ...grid
+        ...grid,
       };
     }
     case ACTIONS.UPDATE_GRID: {
       const { grid } = action.payload;
       return {
         ...state,
-        grid
+        grid,
       };
     }
     case ACTIONS.TOGGLE_CELL: {
@@ -49,48 +49,48 @@ const gridReducer = (state = initialState, action) => {
             return alive === 1 ? 0 : 1;
           }
           return gCol;
-        })
+        }),
       );
       return {
         ...state,
-        grid
+        grid,
       };
     }
     case ACTIONS.CHANGE_COLUMNS: {
       const { columns } = action.payload;
       return {
         ...state,
-        columns
+        columns,
       };
     }
     case ACTIONS.CHANGE_ROWS: {
       const { rows } = action.payload;
       return {
         ...state,
-        rows
+        rows,
       };
     }
     case ACTIONS.CHANGE_CELL_SIZE: {
       const { cellSize } = action.payload;
       return {
         ...state,
-        cellSize
+        cellSize,
       };
     }
     case ACTIONS.CHANGE_CELL_COLOR: {
       const { cellColor } = action.payload;
       return {
         ...state,
-        cellColor
+        cellColor,
       };
     }
     case ACTIONS.RANDOMIZE_GRID: {
       const grid = state.grid.map(row =>
-        row.map(col => Math.round(Math.random()))
+        row.map(col => Math.round(Math.random())),
       );
       return {
         ...state,
-        grid
+        grid,
       };
     }
 

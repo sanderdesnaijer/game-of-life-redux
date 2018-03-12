@@ -5,21 +5,21 @@ import {
   takeEvery,
   takeLatest,
   select,
-  take
+  take,
 } from 'redux-saga/effects';
 import ACTIONS from '../constants/actions';
 import {
   updateGrid,
   toggleCell,
   loadGrid,
-  copyGrid as copyGridAction
+  copyGrid as copyGridAction,
 } from '../actions/actions';
 import {
   createEmptyGrid,
   createFixtureGrid,
   calcPixelToGridPosition,
   calculateNextState,
-  recalcGrid
+  recalcGrid,
 } from '../helpers';
 import { loadState, saveState } from '../helpers/localStorage';
 import {
@@ -27,7 +27,7 @@ import {
   getColumns,
   getGrid,
   getGridPosition,
-  getGridState
+  getGridState,
 } from '../reducers/grid';
 
 import { getCurrentFrame } from '../reducers/gameState';
@@ -130,14 +130,14 @@ function* changeDimensions(action) {
 function* load() {
   yield takeEvery(
     [ACTIONS.CREATE_EMPTY_GRID, ACTIONS.RESET_GRID],
-    createStartGrid
+    createStartGrid,
   );
   yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
   yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
   yield takeEvery(ACTIONS.COPY_GRID, copyGrid);
   yield takeEvery(
     [ACTIONS.CHANGE_COLUMNS, ACTIONS.CHANGE_ROWS],
-    changeDimensions
+    changeDimensions,
   );
   yield takeEvery(ACTIONS.SAVE_GRID, saveGrid);
   yield takeEvery(ACTIONS.PREV_FRAME, prevFrame);

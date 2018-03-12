@@ -6,7 +6,7 @@ import {
   getColumns,
   getRows,
   getCellSize,
-  getCellColor
+  getCellColor,
 } from '../reducers/grid';
 import { isPlaying, getFps } from '../reducers/gameState';
 import Input from '../components/Input';
@@ -24,7 +24,7 @@ import {
   randomizeGrid,
   gotoNextFrame,
   gotoPreviousFrame,
-  saveGrid
+  saveGrid,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -34,7 +34,7 @@ const enhance = connect(
     isPlaying: isPlaying(store),
     cellSize: getCellSize(store),
     cellColor: getCellColor(store),
-    fps: getFps(store)
+    fps: getFps(store),
   }),
   {
     changeRows,
@@ -47,8 +47,8 @@ const enhance = connect(
     randomizeGrid,
     gotoNextFrame,
     gotoPreviousFrame,
-    saveGrid
-  }
+    saveGrid,
+  },
 );
 
 class Controls extends React.Component {

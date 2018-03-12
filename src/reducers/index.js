@@ -9,7 +9,7 @@ const all = combineReducers({
   gridReducer: undoable(gridReducer, {
     //  limit: 10 // set a limit for the history
   }),
-  gameStateReducer
+  gameStateReducer,
 });
 
 export default all;

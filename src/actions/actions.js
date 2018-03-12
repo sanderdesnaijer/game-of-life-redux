@@ -1,110 +1,110 @@
 import ACTIONS from '../constants/actions';
 
 export const createEmptyGrid = () => ({
-  type: ACTIONS.CREATE_EMPTY_GRID
+  type: ACTIONS.CREATE_EMPTY_GRID,
 });
 
 export const clickGrid = (x, y) => ({
   type: ACTIONS.CLICK_GRID,
   payload: {
     x,
-    y
-  }
+    y,
+  },
 });
 
 export const updateGrid = grid => ({
   type: ACTIONS.UPDATE_GRID,
   payload: {
-    grid
-  }
+    grid,
+  },
 });
 
 export const saveGrid = () => ({
-  type: ACTIONS.SAVE_GRID
+  type: ACTIONS.SAVE_GRID,
 });
 
 export const loadGrid = grid => ({
   type: ACTIONS.LOAD_GRID,
   payload: {
-    grid
-  }
+    grid,
+  },
 });
 
 export const copyGrid = grid => ({
   type: ACTIONS.COPY_GRID,
   payload: {
-    grid
-  }
+    grid,
+  },
 });
 
-export const randomizeGrid = grid => ({
-  type: ACTIONS.RANDOMIZE_GRID
+export const randomizeGrid = () => ({
+  type: ACTIONS.RANDOMIZE_GRID,
 });
 
 export const resetGrid = () => ({
-  type: ACTIONS.RESET_GRID
+  type: ACTIONS.RESET_GRID,
 });
 
 export const toggleCell = (row, col) => ({
   type: ACTIONS.TOGGLE_CELL,
   payload: {
     row,
-    col
-  }
+    col,
+  },
 });
 
 export const gotoNextFrame = nextFrame => ({
   type: ACTIONS.NEXT_FRAME,
   payload: {
-    nextFrame
-  }
+    nextFrame,
+  },
 });
 
 export const gotoPreviousFrame = previousFrame => ({
   type: ACTIONS.PREV_FRAME,
   payload: {
-    previousFrame
-  }
+    previousFrame,
+  },
 });
 
 export const changeRows = rows => ({
   type: ACTIONS.CHANGE_ROWS,
   payload: {
-    rows
-  }
+    rows,
+  },
 });
 
 export const changeColumns = columns => ({
   type: ACTIONS.CHANGE_COLUMNS,
   payload: {
-    columns
-  }
+    columns,
+  },
 });
 
 export const togglePlay = playing => ({
   type: ACTIONS.TOGGLE_PLAY,
   payload: {
-    playing
-  }
+    playing,
+  },
 });
 
 export const changeCellSize = cellSize => ({
   type: ACTIONS.CHANGE_CELL_SIZE,
   payload: {
-    cellSize
-  }
+    cellSize,
+  },
 });
 
 export const changeCellColor = cellColor => ({
   type: ACTIONS.CHANGE_CELL_COLOR,
   payload: {
-    cellColor
-  }
+    cellColor,
+  },
 });
 
 export const changeFps = fps => ({
   type: ACTIONS.CHANGE_FPS,
   payload: {
-    fps
-  }
+    fps,
+  },
 });
