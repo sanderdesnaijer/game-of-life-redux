@@ -1,40 +1,48 @@
+// @flow
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
-class InputNumber extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    onChange: PropTypes.func,
-    label: PropTypes.string
-  };
+type Props = {
+  value: number,
+  max: number,
+  min: number,
+  onChange: (value: number) => void,
+  label: string
+};
 
+type State = {
+  value: number
+};
+
+class InputNumber extends React.Component<Props, State> {
   static defaultProps = {
     max: 50,
     min: 0
   };
 
-  constructor(props) {
+  state: State;
+
+  constructor(props: Props) {
     super(props);
+
     this.state = {
       value: props.value
     };
   }
 
-  onChange = event => {
-    const { value } = event.target;
-    const { max, min } = this.props;
+  onChange = (event: SyntheticEvent<HTMLInputElement>) => {
+    (event.currentTarget: HTMLInputElement);
 
-    if (value > max || value < min) return;
+    const { value } = event.currentTarget;
+    const { max, min } = this.props;
+    const parsedValue = parseInt(value, 10);
+    if (parsedValue > max || parsedValue < min) return;
 
     this.setState({
-      value
+      value: parsedValue
     });
 
     if (this.props.onChange) {
-      const returnValue = parseInt(value, 0);
-      this.props.onChange(returnValue);
+      this.props.onChange(parsedValue);
     }
   };
 

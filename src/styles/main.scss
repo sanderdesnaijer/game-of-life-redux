@@ -1,3 +1,5 @@
+@import 'font';
+
 body,
 html {
   width: 100%;
@@ -26,6 +28,14 @@ button {
   flex-direction: column;
   background: rgba(255, 255, 255, 0.6);
   z-index: 1;
+
+  &__group {
+    display: flex;
+    justify-content: stretch;
+    .input {
+      flex-grow: 1;
+    }
+  }
 }
 
 .input {

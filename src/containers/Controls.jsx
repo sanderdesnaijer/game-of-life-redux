@@ -89,6 +89,11 @@ class Controls extends React.Component {
           onChange={this.props.changeCellColor}
         />
 
+        <div className="controls__group">
+          <Button label="reset" onClick={this.props.resetGrid} />
+          <Button label="randomize" onClick={this.props.randomizeGrid} />
+        </div>
+
         <InputNumber
           label="FPS"
           max={1000}
@@ -96,21 +101,18 @@ class Controls extends React.Component {
           onChange={this.props.changeFps}
         />
 
-        <ToggleButton
-          activeLabel="off"
-          inActiveLabel="on"
-          isActive={this.props.isPlaying}
-          onClick={this.props.togglePlay}
-        />
-
-        <Button label="reset" onClick={this.props.resetGrid} />
-
-        <Button label="randomize" onClick={this.props.randomizeGrid} />
-
-        <Button label="next" onClick={this.onGotoNextFrame} />
-        <Button label="prev" onClick={this.onGotoPreviousFrame} />
-
         <Button label="save" onClick={this.props.saveGrid} />
+
+        <div className="controls__group">
+          <Button label="prev" onClick={this.onGotoPreviousFrame} />
+          <ToggleButton
+            activeLabel="off"
+            inActiveLabel="on"
+            isActive={this.props.isPlaying}
+            onClick={this.props.togglePlay}
+          />
+          <Button label="next" onClick={this.onGotoNextFrame} />
+        </div>
       </div>
     );
   }
