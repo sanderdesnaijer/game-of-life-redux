@@ -1,12 +1,27 @@
+// @flow
 import * as React from 'react';
 
-const ToggleButton = ({ activeLabel, inActiveLabel, isActive, onClick }) => {
+type Props = {
+  activeIcon: string,
+  inActiveIcon: string,
+  isActive: boolean,
+  onClick: (isActive: boolean) => void,
+};
+
+const ToggleButton = ({
+  activeIcon,
+  inActiveIcon,
+  isActive,
+  onClick,
+}: Props) => {
   const clickBtn = () => {
     onClick(!isActive);
   };
   return (
-    <div className="input input--button" onClick={clickBtn}>
-      <button>{isActive ? activeLabel : inActiveLabel}</button>
+    <div className="input input--button">
+      <button onClick={clickBtn}>
+        <i className="material-icons">{isActive ? activeIcon : inActiveIcon}</i>
+      </button>
     </div>
   );
 };

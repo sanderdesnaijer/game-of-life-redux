@@ -1,28 +1,36 @@
+// @flow
 import * as React from 'react';
-import PropTypes from 'prop-types';
-
 import { isValidHex } from '../helpers';
 
-class Input extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func,
-    label: PropTypes.string,
-    validate: PropTypes.string
-  };
-  constructor(props) {
+type Props = {
+  value: string,
+  onChange: (value: string) => void,
+  label: string,
+  validate: string,
+};
+
+type State = {
+  value: string,
+};
+
+class Input extends React.Component<Props, State> {
+  state: State;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
-      value: props.value
+      value: props.value,
     };
   }
 
-  onChange = event => {
-    const { value } = event.target;
+  onChange = (event: SyntheticEvent<HTMLInputElement>) => {
+    (event.currentTarget: HTMLInputElement);
+
+    const { value } = event.currentTarget;
     const { validate } = this.props;
 
     this.setState({
-      value
+      value,
     });
 
     if (validate && validate === 'hex') {

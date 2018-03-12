@@ -101,17 +101,17 @@ class Controls extends React.Component {
           onChange={this.props.changeFps}
         />
 
-        <Button label="save" onClick={this.props.saveGrid} />
+        <Button icon="save" onClick={this.props.saveGrid} />
 
         <div className="controls__group">
-          <Button label="prev" onClick={this.onGotoPreviousFrame} />
+          <Button icon="skip_previous" onClick={this.onGotoPreviousFrame} />
           <ToggleButton
-            activeLabel="off"
-            inActiveLabel="on"
+            activeIcon="pause"
+            inActiveIcon="play_arrow"
             isActive={this.props.isPlaying}
             onClick={this.props.togglePlay}
           />
-          <Button label="next" onClick={this.onGotoNextFrame} />
+          <Button icon="skip_next" onClick={this.onGotoNextFrame} />
         </div>
       </div>
     );

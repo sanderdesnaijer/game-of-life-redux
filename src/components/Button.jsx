@@ -1,11 +1,18 @@
+// @flow
 import * as React from 'react';
 
-const Button = ({ label, onClick }) => {
-  return (
-    <div className="input input--button" onClick={onClick}>
-      <button>{label}</button>
-    </div>
-  );
+type Props = {
+  label: string,
+  icon: string,
+  onClick: () => void,
 };
+
+const Button = ({ label, icon, onClick }: Props) => (
+  <div className="input input--button">
+    <button onClick={onClick}>
+      {icon ? <i className="material-icons">{icon}</i> : label}
+    </button>
+  </div>
+);
 
 export default Button;
