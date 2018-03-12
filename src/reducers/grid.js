@@ -9,6 +9,13 @@ const initialState = {
   cellColor: '#66D',
 };
 
+export const hasPreviousGrid = store => {
+  if (store.gridReducer.past.length) {
+    const totalPast = store.gridReducer.past.length;
+    return store.gridReducer.past[totalPast - 1].grid.length > 0;
+  }
+  return false;
+};
 export const getGridState = store => store.gridReducer.present;
 export const getRows = store => store.gridReducer.present.rows;
 export const getColumns = store => store.gridReducer.present.columns;

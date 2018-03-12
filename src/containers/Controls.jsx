@@ -7,6 +7,7 @@ import {
   getRows,
   getCellSize,
   getCellColor,
+  hasPreviousGrid,
 } from '../reducers/grid';
 import { isPlaying, getFps } from '../reducers/gameState';
 import Input from '../components/Input';
@@ -35,6 +36,7 @@ const enhance = connect(
     cellSize: getCellSize(store),
     cellColor: getCellColor(store),
     fps: getFps(store),
+    hasPreviousGrid: hasPreviousGrid(store),
   }),
   {
     changeRows,
@@ -104,7 +106,11 @@ class Controls extends React.Component {
         <Button icon="save" onClick={this.props.saveGrid} />
 
         <div className="controls__group">
-          <Button icon="skip_previous" onClick={this.onGotoPreviousFrame} />
+          <Button
+            icon="skip_previous"
+            onClick={this.onGotoPreviousFrame}
+            disabled={!this.props.hasPreviousGrid}
+          />
           <ToggleButton
             activeIcon="pause"
             inActiveIcon="play_arrow"
