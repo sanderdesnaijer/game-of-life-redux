@@ -1,3 +1,4 @@
+// @flow
 import FIXTURES from '../constants/fixture';
 
 export function createEmptyGrid(rows, columns, value = 0) {
@@ -29,7 +30,7 @@ export function calcPixelToGridPosition(
   y,
   totalColumns,
   totalRows,
-  celSize
+  celSize,
 ) {
   const width = totalColumns * celSize;
   const height = totalRows * celSize;
@@ -38,7 +39,7 @@ export function calcPixelToGridPosition(
   if (x > width || y > height) {
     return {
       row: null,
-      col: null
+      col: null,
     };
   }
   const percentageX = x / width * totalColumns;
@@ -50,7 +51,7 @@ export function calcPixelToGridPosition(
   //console.table({ percentageX, percentageY, row, col });
   return {
     row,
-    col
+    col,
   };
 }
 
@@ -135,6 +136,6 @@ export function recalcGrid(emptyGrid, filledGrid) {
   return checkedGrid;
 }
 
-export function isValidHex(hex) {
+export function isValidHex(hex: string) {
   return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
 }

@@ -8,5 +8,10 @@
         "regenerator": true
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [["env"], "react"]
+    }
+  }
 }
