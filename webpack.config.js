@@ -11,7 +11,7 @@ module.exports = {
     contentBase: './',
     hot: true,
     open: true,
-    //inline: false,
+    // inline: false,
   },
   devtool: 'source-map',
 
@@ -20,7 +20,10 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: [
+          'babel-loader',
+          //  'eslint-loader'
+        ],
       },
       {
         test: /\.scss$/,

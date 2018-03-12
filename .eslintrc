@@ -1,9 +1,16 @@
 {
+
   "parser": "babel-eslint",
   "rules": {
-
+     "import/no-unresolved": 1,
   },
   "extends": [
     "airbnb-base",
+    'plugin:react/recommended'
   ],
+   "globals" : {
+    "window": true,
+    "React": true,
+    "Generator": true,
+  },
 }
