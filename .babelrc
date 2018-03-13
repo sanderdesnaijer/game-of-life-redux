@@ -6,12 +6,14 @@
       {
         "polyfill": false,
         "regenerator": true
-      }
+      },
+      "transform-class-properties",
+      { "spec": true }
     ]
   ],
   "env": {
     "test": {
-      "presets": [["env"], "react"]
+      "presets": ["env", "react", "stage-2"]
     }
   }
 }

@@ -4,8 +4,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 describe('App', () => {
-  test('should render with className', () => {
+  test('should render', () => {
     const wrapper = shallow(<App />);
-    expect(wrapper.find('div').props().className).toBe('gerrit');
+    expect(wrapper).toHaveLength(1);
   });
 });

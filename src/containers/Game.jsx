@@ -12,20 +12,20 @@ const enhance = connect(
   store => ({
     rows: getRows(store),
     isPlaying: isPlaying(store),
-    fps: getFps(store)
+    fps: getFps(store),
   }),
   {
     createEmptyGrid,
-    gotoNextFrame
-  }
+    gotoNextFrame,
+  },
 );
 
 type Props = {
-  isPlaying: boolean
+  isPlaying: boolean,
 };
 
 type State = {
-  isPlaying: boolean
+  isPlaying: boolean,
 };
 
 class Game extends React.Component<Props, State> {
@@ -35,7 +35,7 @@ class Game extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      isPlaying: props.isPlaying
+      isPlaying: props.isPlaying,
     };
   }
 
@@ -43,7 +43,7 @@ class Game extends React.Component<Props, State> {
     const { isPlaying } = nextProps;
     if (this.props.isPlaying !== isPlaying) {
       this.setState({
-        isPlaying
+        isPlaying,
       });
     }
   }
@@ -52,7 +52,7 @@ class Game extends React.Component<Props, State> {
     const { isPlaying } = nextState;
     if (this.state.isPlaying !== isPlaying) {
       this.setState({
-        isPlaying
+        isPlaying,
       });
       return isPlaying ? this.start() : this.stop();
     }
@@ -93,7 +93,7 @@ class Game extends React.Component<Props, State> {
 
   stop = () => {
     this.setState({
-      isPlaying: false
+      isPlaying: false,
     });
   };
 
