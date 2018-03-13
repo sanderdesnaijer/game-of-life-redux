@@ -88,8 +88,8 @@ function* nextFrame() {
 }
 
 function* prevFrame() {
-  const t = yield put(ActionCreators.undo());
-  console.log(t);
+  const undo = yield put(ActionCreators.undo());
+  console.log('undo', undo);
 }
 
 function* copyGrid(action) {
