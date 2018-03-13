@@ -9,7 +9,12 @@ import {
   getCellColor,
   hasPreviousGrid,
 } from '../reducers/grid';
-import { isPlaying, getFps } from '../reducers/gameState';
+import {
+  isPlaying,
+  getFps,
+  getDirection,
+  getCurrentFrame,
+} from '../reducers/gameState';
 import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
 import ToggleButton from '../components/ToggleButton';
@@ -26,6 +31,7 @@ import {
   gotoNextFrame,
   gotoPreviousFrame,
   saveGrid,
+  changePlayDirection,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -35,8 +41,10 @@ const enhance = connect(
     isPlaying: isPlaying(store),
     cellSize: getCellSize(store),
     cellColor: getCellColor(store),
+    currentFrame: getCurrentFrame(store),
     fps: getFps(store),
     hasPreviousGrid: hasPreviousGrid(store),
+    direction: getDirection(store),
   }),
   {
     changeRows,
@@ -50,6 +58,7 @@ const enhance = connect(
     gotoNextFrame,
     gotoPreviousFrame,
     saveGrid,
+    changePlayDirection,
   },
 );
 
@@ -63,6 +72,8 @@ class Controls extends React.Component {
   };
 
   render() {
+    const disablePlay =
+      this.props.currentFrame === 0 && this.props.direction === 'backwards';
     return (
       <div className="controls">
         <InputNumber
@@ -102,9 +113,14 @@ class Controls extends React.Component {
           value={this.props.fps}
           onChange={this.props.changeFps}
         />
-
-        <Button icon="save" onClick={this.props.saveGrid} />
-
+        <div className="controls__group">
+          <Button icon="save" onClick={this.props.saveGrid} />
+          <Button
+            active={this.props.direction === 'forwards'}
+            icon="sync"
+            onClick={this.props.changePlayDirection}
+          />
+        </div>
         <div className="controls__group">
           <Button
             icon="skip_previous"
@@ -116,6 +132,7 @@ class Controls extends React.Component {
             inActiveIcon="play_arrow"
             isActive={this.props.isPlaying}
             onClick={this.props.togglePlay}
+            disabled={disablePlay}
           />
           <Button icon="skip_next" onClick={this.onGotoNextFrame} />
         </div>

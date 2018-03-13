@@ -88,6 +88,10 @@ export const togglePlay = playing => ({
   },
 });
 
+export const changePlayDirection = () => ({
+  type: ACTIONS.CHANGE_PLAY_DIRECTION,
+});
+
 export const changeCellSize = cellSize => ({
   type: ACTIONS.CHANGE_CELL_SIZE,
   payload: {

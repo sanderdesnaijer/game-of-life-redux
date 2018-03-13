@@ -6,10 +6,13 @@ type Props = {
   icon?: string,
   onClick: () => void,
   disabled: boolean,
+  active: boolean,
 };
 
-const Button = ({ label, icon, disabled, onClick }: Props) => (
-  <div className="input input--button">
+const Button = ({ label, icon, disabled, active, onClick }: Props) => (
+  <div
+    className={active ? 'input input--button active' : 'input input--button'}
+  >
     <button onClick={onClick} disabled={disabled}>
       {icon ? <i className="material-icons">{icon}</i> : label}
     </button>

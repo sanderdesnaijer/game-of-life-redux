@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import { getRows } from '../reducers/grid';
 
-import { isPlaying, getFps } from '../reducers/gameState';
-import { createEmptyGrid, gotoNextFrame } from '../actions/actions';
+import { isPlaying, getFps, getDirection } from '../reducers/gameState';
+import {
+  createEmptyGrid,
+  gotoNextFrame,
+  gotoPreviousFrame,
+} from '../actions/actions';
 import Canvas from './Canvas';
 
 const enhance = connect(
@@ -13,10 +17,12 @@ const enhance = connect(
     rows: getRows(store),
     isPlaying: isPlaying(store),
     fps: getFps(store),
+    direction: getDirection(store),
   }),
   {
     createEmptyGrid,
     gotoNextFrame,
+    gotoPreviousFrame,
   },
 );
 
@@ -24,20 +30,8 @@ type Props = {
   isPlaying: boolean,
 };
 
-type State = {
-  isPlaying: boolean,
-};
-
 class Game extends React.Component<Props, State> {
   context: null;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isPlaying: props.isPlaying,
-    };
-  }
 
   componentWillReceiveProps(nextProps) {
     const { isPlaying } = nextProps;
@@ -45,16 +39,10 @@ class Game extends React.Component<Props, State> {
       this.setState({
         isPlaying,
       });
-    }
-  }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
-    const { isPlaying } = nextState;
-    if (this.state.isPlaying !== isPlaying) {
-      this.setState({
-        isPlaying,
-      });
-      return isPlaying ? this.start() : this.stop();
+      if (isPlaying) {
+        this.start();
+      }
     }
   }
 
@@ -65,11 +53,11 @@ class Game extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.stop();
+    //  this.stop();
   }
 
   updateTime = newTime => {
-    if (this.state.isPlaying) {
+    if (this.props.isPlaying) {
       const fpsInterval = 1000 / this.props.fps;
 
       window.requestAnimationFrame(this.updateTime);
@@ -81,20 +69,19 @@ class Game extends React.Component<Props, State> {
       if (this.elapsed > fpsInterval) {
         this.then = this.now - this.elapsed % fpsInterval;
 
-        // draw stuff here
+        // update frame
         this.update();
       }
     }
   };
 
   update = () => {
-    this.props.gotoNextFrame();
-  };
-
-  stop = () => {
-    this.setState({
-      isPlaying: false,
-    });
+    const { direction } = this.props;
+    if (direction === 'forwards') {
+      this.props.gotoNextFrame();
+    } else {
+      this.props.gotoPreviousFrame();
+    }
   };
 
   start = () => {

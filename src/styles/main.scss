@@ -55,6 +55,14 @@ button {
     order: 1;
     width: 60px;
   }
+
+  &--button {
+    &.active {
+      button {
+        background: #def1e3;
+      }
+    }
+  }
 }
 
 #app {
