@@ -1,3 +1,4 @@
+// @flow
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
@@ -8,12 +9,23 @@ const persistedState = loadState();
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = createStore(
+const bundle = [
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(...[sagaMiddleware]),
-  persistedState
-);
+  persistedState,
+];
+
+if (IS_DEBUG) {
+  // add redux devtools specifc on index 1 before the sagas
+  bundle.splice(
+    1,
+    0,
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION__(),
+  );
+}
+
+export const store = createStore(...bundle);
 
 sagaMiddleware.run(rootSaga);
 

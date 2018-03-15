@@ -1,3 +1,5 @@
+const isDebug = !!process.env.IS_DEBUG;
+
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -41,6 +43,9 @@ module.exports = {
     new ExtractTextPlugin({
       filename: '[name].min.css',
       disable: process.env.NODE_ENV === 'development',
+    }),
+    new webpack.DefinePlugin({
+      IS_DEBUG: JSON.stringify(isDebug),
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
