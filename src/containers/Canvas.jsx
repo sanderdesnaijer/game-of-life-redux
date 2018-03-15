@@ -5,7 +5,12 @@ import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
 import { getCurrentFrame } from '../reducers/gameState';
 import KEYS from '../constants/keys';
 
-import { registerContext, clickGrid, gotoNextFrame, copyGrid } from '../actions/actions';
+import {
+  registerContext,
+  clickGrid,
+  gotoNextFrame,
+  copyGrid,
+} from '../actions/actions';
 
 const enhance = connect(
   store => ({
@@ -59,26 +64,29 @@ class Canvas extends React.Component {
     const grid = this.props.grid;
     const context = this.ctx;
     const cellSize = this.props.cellSize;
-
+    console.log(cellSize);
     this.clearGrid();
 
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
         const alive = grid[r][c];
         const color = alive ? this.props.cellColor : '#FFFFFF';
+        const drawAll = true;
 
-        const x = c * cellSize;
-        const y = r * cellSize;
-        const width = cellSize;
-        const height = cellSize;
+        if (drawAll) {
+          const x = c * cellSize;
+          const y = r * cellSize;
+          const width = cellSize;
+          const height = cellSize;
 
-        // order matters
-        context.strokeStyle = '#000';
-        context.lineWidth = 1;
-        context.strokeRect(x, y, width, height);
+          // order matters
+          context.strokeStyle = '#000';
+          context.lineWidth = 1;
+          context.strokeRect(x, y, width, height);
 
-        context.fillStyle = color;
-        context.fillRect(x, y, width, height);
+          context.fillStyle = color;
+          context.fillRect(x, y, width, height);
+        }
       }
     }
   }
@@ -95,12 +103,12 @@ class Canvas extends React.Component {
     this.drawGrid(this.props.grid);
   };
 
-  clickGrid = (evt) => {
+  clickGrid = evt => {
     const { layerX, layerY } = evt;
     this.props.clickGrid(layerX, layerY);
   };
 
-  onKeyDown = (evt) => {
+  onKeyDown = evt => {
     // space
     if (evt.keyCode === KEYS.SPACE) {
       this.props.gotoNextFrame();

@@ -32,6 +32,7 @@ import {
   gotoPreviousFrame,
   saveGrid,
   changePlayDirection,
+  clearGrid,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -59,6 +60,7 @@ const enhance = connect(
     gotoPreviousFrame,
     saveGrid,
     changePlayDirection,
+    clearGrid,
   },
 );
 
@@ -104,12 +106,13 @@ class Controls extends React.Component {
 
         <div className="controls__group">
           <Button label="reset" onClick={this.props.resetGrid} />
+          <Button icon="clear" onClick={this.props.clearGrid} />
           <Button label="randomize" onClick={this.props.randomizeGrid} />
         </div>
 
         <InputNumber
           label="FPS"
-          max={1000}
+          max={60}
           value={this.props.fps}
           onChange={this.props.changeFps}
         />

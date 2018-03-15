@@ -6,17 +6,17 @@ type Props = {
   max: number,
   min: number,
   onChange: (value: number) => void,
-  label: string
+  label: string,
 };
 
 type State = {
-  value: number
+  value: number,
 };
 
 class InputNumber extends React.Component<Props, State> {
   static defaultProps = {
-    max: 50,
-    min: 0
+    max: 1000,
+    min: 0,
   };
 
   state: State;
@@ -25,7 +25,7 @@ class InputNumber extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      value: props.value
+      value: props.value,
     };
   }
 
@@ -38,7 +38,7 @@ class InputNumber extends React.Component<Props, State> {
     if (parsedValue > max || parsedValue < min) return;
 
     this.setState({
-      value: parsedValue
+      value: parsedValue,
     });
 
     if (this.props.onChange) {

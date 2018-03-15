@@ -1,10 +1,13 @@
 // @flow
 import ACTIONS from '../constants/actions';
 
+import { calcTotalCells } from '../helpers';
+
+const cellSize = 12;
 const initialState = {
-  cellSize: 20,
-  rows: 20,
-  columns: 20,
+  cellSize,
+  rows: calcTotalCells(cellSize, 'vertical'),
+  columns: calcTotalCells(cellSize, 'horizontal'),
   grid: [],
   cellColor: '#66D',
 };
@@ -89,6 +92,13 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         cellColor,
+      };
+    }
+    case ACTIONS.CLEAR_GRID: {
+      const grid = state.grid.map(row => row.map(col => 0));
+      return {
+        ...state,
+        grid,
       };
     }
     case ACTIONS.RANDOMIZE_GRID: {

@@ -139,3 +139,11 @@ export function recalcGrid(emptyGrid, filledGrid) {
 export function isValidHex(hex: string) {
   return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
 }
+
+export function calcTotalCells(cellSize: number, direction: string) {
+  if (direction === 'horizontal') {
+    console.log(window.innerWidth, cellSize);
+    return Math.floor(window.innerWidth / cellSize);
+  }
+  return Math.floor(window.innerHeight / cellSize);
+}

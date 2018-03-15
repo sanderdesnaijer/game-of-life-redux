@@ -45,6 +45,10 @@ export const resetGrid = () => ({
   type: ACTIONS.RESET_GRID,
 });
 
+export const clearGrid = () => ({
+  type: ACTIONS.CLEAR_GRID,
+});
+
 export const toggleCell = (row, col) => ({
   type: ACTIONS.TOGGLE_CELL,
   payload: {
