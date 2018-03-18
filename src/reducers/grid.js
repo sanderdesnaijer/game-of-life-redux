@@ -10,7 +10,7 @@ const initialState = {
   rows: calcTotalCells(cellSize, 'vertical'),
   columns: calcTotalCells(cellSize, 'horizontal'),
   grid: [],
-  cellColor: '#66D',
+  cellColor: '#0fb8ea',
 };
 
 export const hasPreviousGrid = store => {
