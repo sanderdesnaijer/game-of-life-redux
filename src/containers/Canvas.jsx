@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
 import { getCurrentFrame } from '../reducers/gameState';
 import KEYS from '../constants/keys';
-
+import { hexToRgb } from '../helpers/color';
 import {
   registerContext,
   clickGrid,
@@ -26,14 +26,22 @@ const enhance = connect(
   },
 );
 
-class Canvas extends React.Component {
-  canvas = null;
+type Props = {
+  grid: Object,
+  cellSize: number,
+  cellColor: string,
+};
+
+class Canvas extends React.Component<Props> {
+  canvas: HTMLElement;
   ctx = null;
+  cells = {};
 
   registerDom = canvas => (this.canvas = canvas);
 
   componentDidMount() {
     this.setContext();
+
     this.canvas.addEventListener('click', this.clickGrid);
     window.addEventListener('resize', this.onResize);
     window.addEventListener('keydown', this.onKeyDown);
@@ -64,28 +72,36 @@ class Canvas extends React.Component {
     const grid = this.props.grid;
     const context = this.ctx;
     const cellSize = this.props.cellSize;
-    console.log(cellSize);
+
     this.clearGrid();
+
+    const rgb = hexToRgb(this.props.cellColor);
 
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
-        const alive = grid[r][c];
-        const color = alive ? this.props.cellColor : '#FFFFFF';
-        const drawAll = true;
+        const cell = grid[r][c];
+        const alive = cell > 0;
+        const x = c * cellSize;
+        const y = r * cellSize;
+        const width = cellSize;
+        const height = cellSize;
 
-        if (drawAll) {
-          const x = c * cellSize;
-          const y = r * cellSize;
-          const width = cellSize;
-          const height = cellSize;
+        // simple
+        //const color = alive ? this.props.cellColor : '#FFFFFF';
+        const drawAll = false;
 
+        let strength = cell;
+
+        if (drawAll || alive) {
           // order matters
           context.strokeStyle = '#000';
           context.lineWidth = 1;
           context.strokeRect(x, y, width, height);
 
-          context.fillStyle = color;
+          context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
           context.fillRect(x, y, width, height);
+
+          //this.cells[cell].draw(c, r, cellSize, this.props.cellColor, alive);
         }
       }
     }

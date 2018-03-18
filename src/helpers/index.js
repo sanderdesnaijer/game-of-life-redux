@@ -20,7 +20,9 @@ export function createFixtureGrid(gridToFill) {
     const fillerRow = filler[0];
     const fillerCol = filler[1];
 
-    grid[fillerRow][fillerCol] = 1;
+    if (grid[fillerRow] && grid[fillerRow][fillerCol]) {
+      grid[fillerRow][fillerCol] = 1;
+    }
   });
   return grid;
 }
@@ -70,7 +72,7 @@ function getNextCell(index, list) {
 function calcNeighbour(row, col, grid) {
   const nextRow = getNextCell(row, grid.length);
   const nextCol = getNextCell(col, grid[0].length);
-  return grid[nextRow][nextCol];
+  return Math.floor(grid[nextRow][nextCol]);
 }
 
 // check every neighbours and calc score
@@ -106,7 +108,7 @@ export function calculateNextState(grid) {
 
 // Game of Life rules
 function isAlive(totalNeighbours, alive) {
-  if (alive) {
+  if (alive === 1) {
     // Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
     // Any live cell with more than three live neighbours dies, as if by overpopulation.
     if (totalNeighbours < 2 || totalNeighbours > 3) {
@@ -142,7 +144,6 @@ export function isValidHex(hex: string) {
 
 export function calcTotalCells(cellSize: number, direction: string) {
   if (direction === 'horizontal') {
-    console.log(window.innerWidth, cellSize);
     return Math.floor(window.innerWidth / cellSize);
   }
   return Math.floor(window.innerHeight / cellSize);

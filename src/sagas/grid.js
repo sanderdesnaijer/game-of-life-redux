@@ -1,3 +1,4 @@
+// @flow
 import { ActionCreators } from 'redux-undo';
 import {
   call,
@@ -56,7 +57,9 @@ function* saveGrid() {
   try {
     const currentState = yield select(getGridState);
     saveState(currentState);
-    yield put(copyGridAction(currentState.grid));
+    if (IS_DEBUG) {
+      yield put(copyGridAction(currentState.grid));
+    }
   } catch (e) {
     console.log(e);
   }
@@ -75,13 +78,37 @@ function* clickGrid(action) {
   } catch (e) {}
 }
 
+const steps = [0.5, 0.2, 0.1];
+
 function* nextFrame() {
   try {
     const grid = yield select(getGrid);
     const newGrid = calculateNextState(grid);
 
+    // calc strength
+    const strengthGrid = newGrid.map((row, rowI) =>
+      row.map((col, colI) => {
+        const currentStrength = col;
+        const pastStrength = grid[rowI][colI];
+
+        if (pastStrength > currentStrength) {
+          if (pastStrength === 1) {
+            return steps[0];
+          }
+          const stepIndex = steps.indexOf(pastStrength);
+          const nextStep = stepIndex + 1;
+          if (steps[nextStep]) {
+            return steps[nextStep];
+          }
+
+          return 0;
+        }
+        return col;
+      }),
+    );
+
     // update store
-    yield put(updateGrid(newGrid));
+    yield put(updateGrid(strengthGrid));
   } catch (e) {
     console.log(e);
   }

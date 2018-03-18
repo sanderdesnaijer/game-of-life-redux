@@ -3,7 +3,8 @@ import ACTIONS from '../constants/actions';
 
 import { calcTotalCells } from '../helpers';
 
-const cellSize = 12;
+const cellSize = 20;
+
 const initialState = {
   cellSize,
   rows: calcTotalCells(cellSize, 'vertical'),
