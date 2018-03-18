@@ -35,6 +35,8 @@ export const getGridPosition = store => {
   };
 };
 
+export const getGridPast = store => store.gridReducer.past;
+
 const gridReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.LOAD_GRID: {
@@ -51,13 +53,12 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case ACTIONS.TOGGLE_CELL: {
-      const { row, col } = action.payload;
+      const { row, col, toggle } = action.payload;
+      // reset past if length
       const grid = state.grid.map((gRow, rowI) =>
         gRow.map((gCol, colI) => {
           if (col === colI && row == rowI) {
-            const alive = state.grid[rowI][colI];
-
-            return alive === 1 ? 0 : 1;
+            return toggle ? 1 : 0;
           }
           return gCol;
         }),

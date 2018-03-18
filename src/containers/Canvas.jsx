@@ -1,15 +1,23 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getGrid, getCellSize, getCellColor } from '../reducers/grid';
+import {
+  getGrid,
+  getCellSize,
+  getCellColor,
+  getColumns,
+  getRows,
+} from '../reducers/grid';
 import { getCurrentFrame } from '../reducers/gameState';
 import KEYS from '../constants/keys';
+import { calcPixelToGridPosition } from '../helpers';
 import { hexToRgb } from '../helpers/color';
 import {
   registerContext,
   clickGrid,
   gotoNextFrame,
   copyGrid,
+  toggleCell,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -17,12 +25,15 @@ const enhance = connect(
     grid: getGrid(store),
     cellSize: getCellSize(store),
     cellColor: getCellColor(store),
+    rows: getRows(store),
+    columns: getColumns(store),
   }),
   {
     registerContext,
     clickGrid,
     gotoNextFrame,
     copyGrid,
+    toggleCell,
   },
 );
 
@@ -37,30 +48,51 @@ class Canvas extends React.Component<Props> {
   ctx = null;
   cells = {};
 
+  state = {
+    pressed: false,
+    // default mode when pressing
+    createAlive: true,
+    currentCell: {},
+  };
+
   registerDom = canvas => (this.canvas = canvas);
 
   componentDidMount() {
     this.setContext();
 
-    this.canvas.addEventListener('click', this.clickGrid);
+    this.canvas.addEventListener('mousedown', this.onMouseDown);
+    this.canvas.addEventListener('mouseup', this.onMouseUp);
+    this.canvas.addEventListener('mousemove', this.onMouseMove);
     window.addEventListener('resize', this.onResize);
     window.addEventListener('keydown', this.onKeyDown);
   }
 
   componentWillUnmount() {
-    this.canvas.removeEventListener('click', this.clickGrid);
+    this.canvas.removeEventListener('mousedown', this.onMouseDown);
+    this.canvas.removeEventListener('mouseup', this.onMouseUp);
+    this.canvas.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('keydown', this.onKeyDown);
   }
 
-  componentDidUpdate(nextProps) {
-    // console.log(this.props.grid, nextProps.grid);
+  componentDidUpdate(nextProps, nextState) {
     if (
       this.props.grid !== nextProps.grid ||
       this.props.cellColor !== nextProps.cellColor ||
       this.props.cellSize !== nextProps.cellSize
     ) {
       this.drawGrid();
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.currentCell !== this.state.currentCell &&
+      nextState.currentCell.row !== undefined
+    ) {
+      const { row, col } = nextState.currentCell;
+
+      this.props.toggleCell(row, col, nextState.createAlive);
     }
   }
 
@@ -83,25 +115,18 @@ class Canvas extends React.Component<Props> {
         const alive = cell > 0;
         const x = c * cellSize;
         const y = r * cellSize;
-        const width = cellSize;
-        const height = cellSize;
 
         // simple
-        //const color = alive ? this.props.cellColor : '#FFFFFF';
-        const drawAll = false;
-
         let strength = cell;
 
-        if (drawAll || alive) {
+        if (alive) {
           // order matters
           context.strokeStyle = '#000';
           context.lineWidth = 1;
-          context.strokeRect(x, y, width, height);
+          context.strokeRect(x, y, cellSize, cellSize);
 
           context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
-          context.fillRect(x, y, width, height);
-
-          //this.cells[cell].draw(c, r, cellSize, this.props.cellColor, alive);
+          context.fillRect(x, y, cellSize, cellSize);
         }
       }
     }
@@ -119,9 +144,78 @@ class Canvas extends React.Component<Props> {
     this.drawGrid(this.props.grid);
   };
 
-  clickGrid = evt => {
+  calcPosition = evt => {
     const { layerX, layerY } = evt;
-    this.props.clickGrid(layerX, layerY);
+    const { row, col } = calcPixelToGridPosition(
+      layerX,
+      layerY,
+      this.props.columns,
+      this.props.rows,
+      this.props.cellSize,
+    );
+    return {
+      row,
+      col,
+    };
+  };
+
+  onMouseDown = evt => {
+    let newState = {
+      pressed: true,
+      createAlive: true,
+    };
+
+    const { row, col } = this.calcPosition(evt);
+    if (row && col) {
+      newState = {
+        ...newState,
+        currentCell: {
+          row,
+          col,
+        },
+      };
+
+      // calc first cliced element
+      const currentValue = this.props.grid[row][col];
+      if (currentValue !== undefined) {
+        // count faded cells as alive
+        const alive = Math.floor(currentValue) === 1;
+
+        newState = {
+          ...newState,
+          createAlive: !alive,
+        };
+      }
+    }
+
+    this.setState(newState);
+  };
+
+  onMouseUp = evt => {
+    this.setState({
+      pressed: false,
+      currentCell: {},
+    });
+  };
+
+  onMouseMove = evt => {
+    if (this.state.pressed) {
+      const { row, col } = this.calcPosition(evt);
+      if (row && col) {
+        if (
+          this.state.currentCell.row !== row ||
+          this.state.currentCell.col !== col
+        ) {
+          this.setState({
+            ...this.state,
+            currentCell: {
+              row,
+              col,
+            },
+          });
+        }
+      }
+    }
   };
 
   onKeyDown = evt => {

@@ -49,11 +49,12 @@ export const clearGrid = () => ({
   type: ACTIONS.CLEAR_GRID,
 });
 
-export const toggleCell = (row, col) => ({
+export const toggleCell = (row, col, toggle) => ({
   type: ACTIONS.TOGGLE_CELL,
   payload: {
     row,
     col,
+    toggle,
   },
 });
 

@@ -9,20 +9,21 @@ const persistedState = loadState();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const bundle = [
+let bundle = [
   rootReducer,
   applyMiddleware(...[sagaMiddleware]),
   persistedState,
 ];
 
 if (IS_DEBUG) {
-  // add redux devtools specifc on index 1 before the sagas
-  bundle.splice(
-    1,
-    0,
+  bundle = [
+    rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ &&
       window.__REDUX_DEVTOOLS_EXTENSION__(),
-  );
+
+    applyMiddleware(...[sagaMiddleware]),
+    persistedState,
+  ];
 }
 
 export const store = createStore(...bundle);

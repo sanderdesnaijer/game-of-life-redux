@@ -11,7 +11,7 @@ import {
 import ACTIONS from '../constants/actions';
 import {
   updateGrid,
-  toggleCell,
+  toggleCell as toggleCellAction,
   loadGrid,
   copyGrid as copyGridAction,
 } from '../actions/actions';
@@ -29,6 +29,7 @@ import {
   getGrid,
   getGridPosition,
   getGridState,
+  getGridPast,
 } from '../reducers/grid';
 
 import { getCurrentFrame } from '../reducers/gameState';
@@ -65,20 +66,7 @@ function* saveGrid() {
   }
 }
 
-function* clickGrid(action) {
-  try {
-    const { x, y } = action.payload;
-    const { columns, rows, cellSize } = yield select(getGridPosition);
-    const { row, col } = calcPixelToGridPosition(x, y, columns, rows, cellSize);
-
-    // update store
-    if (row !== null || col !== null) {
-      yield put(toggleCell(row, col));
-    }
-  } catch (e) {}
-}
-
-const steps = [0.5, 0.2, 0.1];
+const steps = [0.5, 0.4, 0.3, 0.2, 0.1];
 
 function* nextFrame() {
   try {
@@ -159,7 +147,6 @@ function* load() {
     [ACTIONS.CREATE_EMPTY_GRID, ACTIONS.RESET_GRID],
     createStartGrid,
   );
-  yield takeEvery(ACTIONS.CLICK_GRID, clickGrid);
   yield takeEvery(ACTIONS.NEXT_FRAME, nextFrame);
   yield takeEvery(ACTIONS.COPY_GRID, copyGrid);
   yield takeEvery(
