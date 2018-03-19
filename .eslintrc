@@ -2,10 +2,13 @@
 
   "parser": "babel-eslint",
   "rules": {
-     "import/no-unresolved": 1,
+    "import/no-unresolved": 1,
   },
   "extends": [
     "airbnb-base",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react",
     'plugin:react/recommended'
   ],
    "globals" : {
@@ -13,4 +16,7 @@
     "React": true,
     "Generator": true,
   },
+  "plugins": [
+    "prettier"
+  ]
 }

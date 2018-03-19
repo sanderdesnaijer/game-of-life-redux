@@ -112,20 +112,12 @@ function* copyGrid(action) {
     const { grid } = action.payload;
 
     const filtered = grid.reduce((list, row, rowI) => {
-      const t = row.map((col, colI) => {
-        if (col) {
-          list.push([rowI, colI]);
-        }
-      });
+      list += `[${row.toString()}],`;
       return list;
-    }, []);
+    }, '');
 
-    let string = '';
-    filtered.map((row, rowI) => {
-      string = `${string}[${row[0]},${row[1]}],`;
-    });
-    string = `[${string}]`;
-    console.log(string);
+    const fullList = `[${filtered}]`;
+    console.log(fullList);
   } catch (e) {
     console.log(e);
   }

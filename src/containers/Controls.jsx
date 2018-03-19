@@ -19,6 +19,7 @@ import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
 import ToggleButton from '../components/ToggleButton';
 import Button from '../components/Button';
+import Presets from './Presets';
 import {
   changeRows,
   changeColumns,
@@ -83,19 +84,16 @@ class Controls extends React.Component {
           value={this.props.rows}
           onChange={this.props.changeRows}
         />
-
         <InputNumber
           label="Columns"
           value={this.props.columns}
           onChange={this.props.changeColumns}
         />
-
         <InputNumber
           label="Size"
           value={this.props.cellSize}
           onChange={this.props.changeCellSize}
         />
-
         <Input
           value={this.props.cellColor}
           type="text"
@@ -103,13 +101,11 @@ class Controls extends React.Component {
           label="Hex Color"
           onChange={this.props.changeCellColor}
         />
-
         <div className="controls__group">
           <Button label="reset" onClick={this.props.resetGrid} />
           <Button icon="clear" onClick={this.props.clearGrid} />
           <Button label="randomize" onClick={this.props.randomizeGrid} />
         </div>
-
         <InputNumber
           label="FPS"
           max={60}
@@ -139,6 +135,7 @@ class Controls extends React.Component {
           />
           <Button icon="skip_next" onClick={this.onGotoNextFrame} />
         </div>
+        <Presets />
       </div>
     );
   }

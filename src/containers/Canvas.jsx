@@ -117,7 +117,7 @@ class Canvas extends React.Component<Props> {
         const y = r * cellSize;
 
         // simple
-        let strength = cell;
+        const strength = cell;
 
         if (alive) {
           // order matters
@@ -166,7 +166,8 @@ class Canvas extends React.Component<Props> {
     };
 
     const { row, col } = this.calcPosition(evt);
-    if (row && col) {
+
+    if (row !== null && col !== null) {
       newState = {
         ...newState,
         currentCell: {
