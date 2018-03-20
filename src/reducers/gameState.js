@@ -1,4 +1,14 @@
+// @flow
 import ACTIONS from '../constants/actions';
+
+type State = {
+  playing: boolean,
+  fps: number,
+  totalFrames: number,
+  currentFrame: number,
+  direction: 'forwards' | 'backwards',
+  mode: 'insert-preset' | 'drag-add',
+};
 
 const initialState = {
   playing: false,
@@ -6,6 +16,7 @@ const initialState = {
   totalFrames: 0,
   currentFrame: 0,
   direction: 'forwards',
+  mode: 'insert-preset',
 };
 
 export const getFps = store => store.gameStateReducer.fps;
@@ -13,7 +24,7 @@ export const isPlaying = store => store.gameStateReducer.playing;
 export const getCurrentFrame = store => store.gameStateReducer.currentFrame;
 export const getDirection = store => store.gameStateReducer.direction;
 
-const gameStateReducer = (state = initialState, action) => {
+const gameStateReducer = (state: State = initialState, action) => {
   switch (action.type) {
     case ACTIONS.TOGGLE_PLAY: {
       const { playing } = action.payload;

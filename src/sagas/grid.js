@@ -73,30 +73,8 @@ function* nextFrame() {
     const grid = yield select(getGrid);
     const newGrid = calculateNextState(grid);
 
-    // calc strength
-    const strengthGrid = newGrid.map((row, rowI) =>
-      row.map((col, colI) => {
-        const currentStrength = col;
-        const pastStrength = grid[rowI][colI];
-
-        if (pastStrength > currentStrength) {
-          if (pastStrength === 1) {
-            return steps[0];
-          }
-          const stepIndex = steps.indexOf(pastStrength);
-          const nextStep = stepIndex + 1;
-          if (steps[nextStep]) {
-            return steps[nextStep];
-          }
-
-          return 0;
-        }
-        return col;
-      }),
-    );
-
     // update store
-    yield put(updateGrid(strengthGrid));
+    yield put(updateGrid(newGrid));
   } catch (e) {
     console.log(e);
   }

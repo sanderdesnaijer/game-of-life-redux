@@ -48,12 +48,20 @@ class Canvas extends React.Component<Props> {
   ctx = null;
   cells = {};
 
-  state = {
-    pressed: false,
-    // default mode when pressing
-    createAlive: true,
-    currentCell: {},
-  };
+  constructor(props) {
+    super();
+    this.state = {
+      pressed: false,
+      // default mode when pressing
+      createAlive: true,
+      currentCell: {},
+      grid: props.grid,
+
+      // TODO move these to reducer
+      showTrail: true,
+      mode: 'drag-add', // 'drag-add', // drag-add, insert-preset
+    };
+  }
 
   registerDom = canvas => (this.canvas = canvas);
 
@@ -75,9 +83,56 @@ class Canvas extends React.Component<Props> {
     window.removeEventListener('keydown', this.onKeyDown);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const nextGrid = nextProps.grid;
+    const currentGrid = this.props.grid;
+
+    if (nextGrid !== currentGrid) {
+      if (this.state.showTrail) {
+        // TODO make this great again
+        const steps = [0.5, 0.4, 0.3, 0.2, 0.1];
+        const strengthGrid = nextGrid.map((row, rowI) =>
+          row.map((col, colI) => {
+            const currentStrength = col;
+
+            // if it has no previous grid, just return current
+            if (!currentGrid[rowI] || !currentGrid[rowI][colI])
+              return currentStrength;
+
+            const pastStrength = currentGrid[rowI][colI];
+
+            if (pastStrength > currentStrength) {
+              if (pastStrength === 1) {
+                return steps[0];
+              }
+              const stepIndex = steps.indexOf(pastStrength);
+              const nextStep = stepIndex + 1;
+              if (steps[nextStep]) {
+                return steps[nextStep];
+              }
+
+              return 0;
+            }
+            return col;
+          }),
+        );
+
+        // strenght grid
+        this.setState({
+          grid: strengthGrid,
+        });
+      } else {
+        // normal grid
+        this.setState({
+          grid: nextGrid,
+        });
+      }
+    }
+  }
+
   componentDidUpdate(nextProps, nextState) {
     if (
-      this.props.grid !== nextProps.grid ||
+      this.state.grid !== nextState.grid ||
       this.props.cellColor !== nextProps.cellColor ||
       this.props.cellSize !== nextProps.cellSize
     ) {
@@ -91,17 +146,47 @@ class Canvas extends React.Component<Props> {
       nextState.currentCell.row !== undefined
     ) {
       const { row, col } = nextState.currentCell;
+      const { mode } = this.state;
 
-      this.props.toggleCell(row, col, nextState.createAlive);
+      // mode
+      if (mode === 'drag-add' && this.state.pressed) {
+        // toggle when dragging
+        this.props.toggleCell(row, col, nextState.createAlive);
+      } else if (mode === 'insert-preset') {
+        // reset old
+        // set new temp
+        // this.hoverCell(nextState.currentCell);
+      }
+
+      // always hover cell
+      this.hoverCell(nextState.currentCell);
     }
   }
+
+  hoverCell = nextCell => {
+    const newGrid = [...this.state.grid];
+    const { currentCell } = this.state;
+
+    if (currentCell.row !== undefined) {
+      // reset old
+      newGrid[currentCell.row][currentCell.col] = this.props.grid[
+        currentCell.row
+      ][currentCell.col];
+    }
+    // set new
+    newGrid[nextCell.row][nextCell.col] = 1;
+
+    this.setState({
+      grid: newGrid,
+    });
+  };
 
   clearGrid() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
   drawGrid() {
-    const grid = this.props.grid;
+    const grid = this.state.grid;
     const context = this.ctx;
     const cellSize = this.props.cellSize;
 
@@ -160,7 +245,7 @@ class Canvas extends React.Component<Props> {
   };
 
   onMouseDown = evt => {
-    let newState = {
+    let nextState = {
       pressed: true,
       createAlive: true,
     };
@@ -168,28 +253,37 @@ class Canvas extends React.Component<Props> {
     const { row, col } = this.calcPosition(evt);
 
     if (row !== null && col !== null) {
-      newState = {
-        ...newState,
+      nextState = {
+        ...nextState,
         currentCell: {
           row,
           col,
         },
       };
 
-      // calc first cliced element
-      const currentValue = this.props.grid[row][col];
-      if (currentValue !== undefined) {
-        // count faded cells as alive
-        const alive = Math.floor(currentValue) === 1;
+      if (this.state.mode === 'insert-preset') {
+        console.log(row, col);
+      }
 
-        newState = {
-          ...newState,
-          createAlive: !alive,
-        };
+      if (this.state.mode === 'drag-add') {
+        // calc first cliced element
+        const currentValue = this.props.grid[row][col];
+
+        if (currentValue !== undefined) {
+          // count faded cells as alive
+          const alive = Math.floor(currentValue) === 1;
+
+          this.props.toggleCell(row, col, !alive);
+
+          nextState = {
+            ...nextState,
+            createAlive: !alive,
+          };
+        }
       }
     }
 
-    this.setState(newState);
+    this.setState(nextState);
   };
 
   onMouseUp = evt => {
@@ -200,23 +294,23 @@ class Canvas extends React.Component<Props> {
   };
 
   onMouseMove = evt => {
-    if (this.state.pressed) {
-      const { row, col } = this.calcPosition(evt);
-      if (row && col) {
-        if (
-          this.state.currentCell.row !== row ||
-          this.state.currentCell.col !== col
-        ) {
-          this.setState({
-            ...this.state,
-            currentCell: {
-              row,
-              col,
-            },
-          });
-        }
+    // if (this.state.pressed || this.state.mode === 'insert-preset') {
+    const { row, col } = this.calcPosition(evt);
+    if (row !== null && col !== null) {
+      if (
+        this.state.currentCell.row !== row ||
+        this.state.currentCell.col !== col
+      ) {
+        this.setState({
+          ...this.state,
+          currentCell: {
+            row,
+            col,
+          },
+        });
       }
     }
+    // }
   };
 
   onKeyDown = evt => {
