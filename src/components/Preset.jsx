@@ -45,16 +45,22 @@ class PresetCanvas extends React.Component<Props> {
 
         // simple
         const strength = cell;
-
+        const lineWidth = 1;
         if (alive) {
-          const lineWidth = 1;
           // order matters
           context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
           context.fillRect(x, y, cellSize, cellSize);
 
           context.strokeStyle = '#000';
           context.lineWidth = lineWidth;
-          context.strokeRect(x + lineWidth, y + lineWidth, cellSize, cellSize);
+          context.strokeRect(x, y, cellSize, cellSize);
+        } else {
+          context.strokeStyle = '#CCC';
+          context.lineWidth = lineWidth;
+          context.strokeRect(x, y, cellSize, cellSize);
+
+          context.fillStyle = `#FFF`;
+          context.fillRect(x, y, cellSize, cellSize);
         }
       }
     }
@@ -62,8 +68,8 @@ class PresetCanvas extends React.Component<Props> {
 
   setContext = () => {
     // make a function here and resue, 2 == 2 x linewidth
-    const height = this.props.grid.length * this.props.cellSize + 2;
-    const width = this.props.grid[0].length * this.props.cellSize + 2;
+    const height = this.props.grid.length * this.props.cellSize;
+    const width = this.props.grid[0].length * this.props.cellSize;
 
     this.ctx = this.canvas.getContext('2d');
     this.ctx.canvas.width = width;

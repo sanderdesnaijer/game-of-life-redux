@@ -7,6 +7,11 @@ html {
   margin: 0px;
 }
 
+ul, li {
+  padding: 0px;
+  margin: 0px;
+}
+
 input,
 button {
   font-size: 1em;
@@ -29,6 +34,7 @@ button {
   flex-direction: column;
   background: rgba(255, 255, 255, 0.6);
   z-index: 1;
+  width: 300px;
 
   &__group {
     display: flex;
@@ -63,6 +69,17 @@ button {
         background: #def1e3;
       }
     }
+  }
+}
+
+.presets {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &__item {
+    display: inline-block;
+    list-style: none;
   }
 }
 
