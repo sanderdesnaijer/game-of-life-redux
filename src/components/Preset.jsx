@@ -46,22 +46,17 @@ class PresetCanvas extends React.Component<Props> {
         // simple
         const strength = cell;
         const lineWidth = 1;
-        if (alive) {
-          // order matters
-          context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
-          context.fillRect(x, y, cellSize, cellSize);
+        const fillStyle = alive
+          ? `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`
+          : '#FFF';
+        const strokeStyle = alive ? '#000' : 'DDD';
+        // order matters
+        context.fillStyle = fillStyle;
+        context.fillRect(x, y, cellSize, cellSize);
 
-          context.strokeStyle = '#000';
-          context.lineWidth = lineWidth;
-          context.strokeRect(x, y, cellSize, cellSize);
-        } else {
-          context.strokeStyle = '#CCC';
-          context.lineWidth = lineWidth;
-          context.strokeRect(x, y, cellSize, cellSize);
-
-          context.fillStyle = `#FFF`;
-          context.fillRect(x, y, cellSize, cellSize);
-        }
+        context.strokeStyle = strokeStyle;
+        context.lineWidth = lineWidth;
+        context.strokeRect(x, y, cellSize, cellSize);
       }
     }
   }
