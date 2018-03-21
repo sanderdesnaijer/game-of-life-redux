@@ -52,6 +52,20 @@ const gridReducer = (state = initialState, action) => {
         grid,
       };
     }
+    case ACTIONS.INSERT_PRESET: {
+      const { cells } = action.payload;
+      const clone = [...state.grid];
+
+      const gridMap = cells.map(cell => {
+        clone[cell.row][cell.col] = cell.value;
+      });
+
+      // const cloneGrid = state.grid
+      return {
+        grid: clone,
+        ...state,
+      };
+    }
     case ACTIONS.TOGGLE_CELL: {
       const { row, col, toggle } = action.payload;
       // reset past if length

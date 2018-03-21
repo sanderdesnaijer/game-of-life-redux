@@ -8,9 +8,9 @@ import {
   getColumns,
   getRows,
 } from '../reducers/grid';
-import { getCurrentFrame } from '../reducers/gameState';
+import { getCurrentFrame, getMode, getPreset } from '../reducers/gameState';
 import KEYS from '../constants/keys';
-import { calcPixelToGridPosition } from '../helpers';
+import { calcPixelToGridPosition, calcPreset } from '../helpers';
 import { hexToRgb } from '../helpers/color';
 import {
   registerContext,
@@ -18,6 +18,7 @@ import {
   gotoNextFrame,
   copyGrid,
   toggleCell,
+  insertPreset,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -27,6 +28,8 @@ const enhance = connect(
     cellColor: getCellColor(store),
     rows: getRows(store),
     columns: getColumns(store),
+    mode: getMode(store),
+    preset: getPreset(store),
   }),
   {
     registerContext,
@@ -34,6 +37,7 @@ const enhance = connect(
     gotoNextFrame,
     copyGrid,
     toggleCell,
+    insertPreset,
   },
 );
 
@@ -55,11 +59,13 @@ class Canvas extends React.Component<Props> {
       // default mode when pressing
       createAlive: true,
       currentCell: {},
+      hoverCells: [],
       grid: props.grid,
+      mode: props.mode,
 
       // TODO move these to reducer
       showTrail: true,
-      mode: 'drag-add', // 'drag-add', // drag-add, insert-preset
+      preset: props.preset,
     };
   }
 
@@ -86,6 +92,12 @@ class Canvas extends React.Component<Props> {
   componentWillReceiveProps(nextProps) {
     const nextGrid = nextProps.grid;
     const currentGrid = this.props.grid;
+
+    if (nextProps.preset !== this.props.preset) {
+      this.setState({
+        preset: nextProps.preset,
+      });
+    }
 
     if (nextGrid !== currentGrid) {
       if (this.state.showTrail) {
@@ -116,7 +128,6 @@ class Canvas extends React.Component<Props> {
             return col;
           }),
         );
-
         // strenght grid
         this.setState({
           grid: strengthGrid,
@@ -149,32 +160,70 @@ class Canvas extends React.Component<Props> {
       const { mode } = this.state;
 
       // mode
-      if (mode === 'drag-add' && this.state.pressed) {
+      if (mode === 'drag-add') {
         // toggle when dragging
-        this.props.toggleCell(row, col, nextState.createAlive);
+        this.hoverCell(nextState.currentCell);
+
+        // here necesary for dragging
+        if (this.state.pressed) {
+          this.props.toggleCell(row, col, nextState.createAlive);
+        }
       } else if (mode === 'insert-preset') {
         // reset old
         // set new temp
-        // this.hoverCell(nextState.currentCell);
+        const presetGrid = calcPreset(
+          row,
+          col,
+          this.state.preset,
+          this.props.grid,
+        );
+        this.hoverCells(presetGrid);
       }
-
-      // always hover cell
-      this.hoverCell(nextState.currentCell);
     }
   }
 
+  hoverCells = newCells => {
+    const clone = [...this.props.grid];
+    // reset to previous one
+    this.state.hoverCells.map(cell => {
+      clone[cell.row][cell.col] = cell.oldValue;
+    });
+
+    // update with new values
+    const newOldCells = [];
+    for (let i = 0; i < newCells.length; i++) {
+      const newCell = newCells[i];
+      const oldValue = clone[newCell.row][newCell.col];
+      newOldCells.push({
+        ...newCell,
+        oldValue,
+      });
+      clone[newCell.row][newCell.col] = newCell.value;
+    }
+
+    this.setState({
+      hoverCells: newOldCells,
+      grid: clone,
+    });
+  };
+
+  // TODO do we need this?
   hoverCell = nextCell => {
     const newGrid = [...this.state.grid];
     const { currentCell } = this.state;
 
-    if (currentCell.row !== undefined) {
+    // if cell exist
+    if (currentCell.row !== undefined && newGrid[currentCell.row]) {
       // reset old
       newGrid[currentCell.row][currentCell.col] = this.props.grid[
         currentCell.row
       ][currentCell.col];
+
+      // set new
+      if (newGrid[nextCell.row] !== undefined) {
+        newGrid[nextCell.row][nextCell.col] = 1;
+      }
     }
-    // set new
-    newGrid[nextCell.row][nextCell.col] = 1;
 
     this.setState({
       grid: newGrid,
@@ -262,7 +311,10 @@ class Canvas extends React.Component<Props> {
       };
 
       if (this.state.mode === 'insert-preset') {
-        console.log(row, col);
+        this.setState({
+          hoverCells: [],
+        });
+        this.props.insertPreset(this.state.hoverCells);
       }
 
       if (this.state.mode === 'drag-add') {

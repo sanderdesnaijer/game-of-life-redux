@@ -17,12 +17,16 @@ const initialState = {
   currentFrame: 0,
   direction: 'forwards',
   mode: 'insert-preset',
+  preset: [],
+  activePreset: null,
 };
 
 export const getFps = store => store.gameStateReducer.fps;
 export const isPlaying = store => store.gameStateReducer.playing;
 export const getCurrentFrame = store => store.gameStateReducer.currentFrame;
 export const getDirection = store => store.gameStateReducer.direction;
+export const getMode = store => store.gameStateReducer.mode;
+export const getPreset = store => store.gameStateReducer.preset;
 
 const gameStateReducer = (state: State = initialState, action) => {
   switch (action.type) {
@@ -76,6 +80,14 @@ const gameStateReducer = (state: State = initialState, action) => {
         currentFrame: 0,
         totalFrames: 0,
         playing: false,
+      };
+    }
+    case ACTIONS.ACTIVATE_PRESET: {
+      const { id, cells } = action.payload;
+      return {
+        ...state,
+        activePreset: id,
+        preset: cells,
       };
     }
     default: {

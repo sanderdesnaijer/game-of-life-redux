@@ -2,7 +2,7 @@
 import FIXTURES from '../constants/fixture';
 
 export function createEmptyGrid(rows, columns, value = 0) {
-  let grid = [];
+  const grid = [];
   for (let r = 0; r < rows; r++) {
     grid[r] = [r];
     for (let c = 0; c < columns; c++) {
@@ -50,7 +50,7 @@ export function calcPixelToGridPosition(
   const col = Math.floor(percentageX);
   const row = Math.floor(percentageY);
 
-  //console.table({ percentageX, percentageY, row, col });
+  // console.table({ percentageX, percentageY, row, col });
   return {
     row,
     col,
@@ -63,7 +63,8 @@ function getNextCell(index, list) {
     return list - 1;
   }
   if (index > list - 1) {
-    return 0;
+    // console.log(index, list);
+    return index - list;
   }
   return index;
 }
@@ -124,17 +125,46 @@ function isAlive(totalNeighbours, alive) {
   }
 }
 
+export function calcPreset(rowIndex, colIndex, preset, grid) {
+  // const rowIndex = rowX;
+  // const colIndex = colX;
+
+  const list = [];
+
+  const calcedPresets = preset.forEach((rows, rowI) => {
+    const nextRow = getNextCell(rowIndex + rowI, grid.length);
+
+    const newRows = rows.map((col, colI) => {
+      const nextCol = getNextCell(colIndex + colI, grid[0].length);
+      //  console.log(nextRow, nextCol, 'value', col);
+      // just fill a list with rows and cols need to hover
+      list.push({
+        row: nextRow,
+        col: nextCol,
+        value: col,
+      });
+      return col;
+    });
+
+    // rowIndex += 1;
+    return newRows;
+  });
+  return list;
+
+  // console.log(row, col, preset, grid);
+}
+
 // update empty grid with new filled grid
 export function recalcGrid(emptyGrid, filledGrid) {
-  const checkedGrid = emptyGrid.map((row, rowIndex) => {
-    return row.map((col, colIndex) => {
+  const checkedGrid = emptyGrid.map((row, rowIndex) =>
+    row.map((col, colIndex) => {
       // if doesnt exist just retun 0
       if (!filledGrid[rowIndex] || !filledGrid[rowIndex][colIndex]) {
         return 0;
       }
       return filledGrid[rowIndex][colIndex];
-    });
-  });
+    }),
+  );
   return checkedGrid;
 }
 

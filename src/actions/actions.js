@@ -117,3 +117,22 @@ export const changeFps = fps => ({
     fps,
   },
 });
+
+export const activatePreset = (id, cells) => ({
+  type: ACTIONS.ACTIVATE_PRESET,
+  payload: {
+    id,
+    cells,
+  },
+});
+
+export const deactivatePreset = () => ({
+  type: ACTIONS.DEACTIVATE_PRESET,
+});
+
+export const insertPreset = cells => ({
+  type: ACTIONS.INSERT_PRESET,
+  payload: {
+    cells,
+  },
+});
