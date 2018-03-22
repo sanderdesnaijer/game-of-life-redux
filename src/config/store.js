@@ -5,15 +5,10 @@ import createSagaMiddleware from 'redux-saga';
 import { loadState, saveState } from '../helpers/localStorage';
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
-const persistedState = loadState();
 
 const sagaMiddleware = createSagaMiddleware();
 
-let bundle = [
-  rootReducer,
-  applyMiddleware(...[sagaMiddleware]),
-  persistedState,
-];
+let bundle = [rootReducer, applyMiddleware(...[sagaMiddleware])];
 
 if (IS_DEBUG) {
   bundle = [
@@ -22,7 +17,6 @@ if (IS_DEBUG) {
       window.__REDUX_DEVTOOLS_EXTENSION__(),
 
     applyMiddleware(...[sagaMiddleware]),
-    persistedState,
   ];
 }
 

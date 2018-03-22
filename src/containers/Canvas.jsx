@@ -77,6 +77,7 @@ class Canvas extends React.Component<Props> {
     this.canvas.addEventListener('mousedown', this.onMouseDown);
     this.canvas.addEventListener('mouseup', this.onMouseUp);
     this.canvas.addEventListener('mousemove', this.onMouseMove);
+    this.canvas.addEventListener('mouseout', this.clearHoverCells);
     window.addEventListener('resize', this.onResize);
     window.addEventListener('keydown', this.onKeyDown);
   }
@@ -85,6 +86,7 @@ class Canvas extends React.Component<Props> {
     this.canvas.removeEventListener('mousedown', this.onMouseDown);
     this.canvas.removeEventListener('mouseup', this.onMouseUp);
     this.canvas.removeEventListener('mousemove', this.onMouseMove);
+    this.canvas.addEventListener('mouseout', this.clearHoverCells);
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('keydown', this.onKeyDown);
   }
@@ -181,6 +183,18 @@ class Canvas extends React.Component<Props> {
       }
     }
   }
+
+  clearHoverCells = () => {
+    const clone = [...this.props.grid];
+    // reset to previous one
+    this.state.hoverCells.map(cell => {
+      clone[cell.row][cell.col] = cell.oldValue;
+    });
+
+    this.setState({
+      grid: clone,
+    });
+  };
 
   hoverCells = newCells => {
     const clone = [...this.props.grid];
