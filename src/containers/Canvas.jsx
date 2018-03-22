@@ -173,14 +173,15 @@ class Canvas extends React.Component<Props> {
       if (mode === 'drag-add') {
         // console.log(nextState.currentCell);
         // toggle when dragging
+
+        // here necesary for dragging
+
         this.hoverCells([
           {
             ...nextState.currentCell,
             value: 1,
           },
         ]);
-
-        // here necesary for dragging
         if (this.state.pressed) {
           this.props.toggleCell(row, col, nextState.createAlive);
         }
@@ -199,7 +200,7 @@ class Canvas extends React.Component<Props> {
   }
 
   clearHoverCells = () => {
-    const clone = [...this.props.grid];
+    const clone = [...this.props.grid.map(row => row.slice(0))];
     // reset to previous one
     this.state.hoverCells.map(cell => {
       clone[cell.row][cell.col] = cell.oldValue;
@@ -212,8 +213,8 @@ class Canvas extends React.Component<Props> {
   };
 
   hoverCells = newCells => {
-    console.log(newCells);
-    const clone = [...this.props.grid];
+    const clone = this.props.grid.map(row => row.slice(0));
+
     // reset to previous one
     this.state.hoverCells.map(cell => {
       clone[cell.row][cell.col] = cell.oldValue;
@@ -318,9 +319,6 @@ class Canvas extends React.Component<Props> {
       };
 
       if (this.state.mode === 'insert-preset') {
-        this.setState({
-          hoverCells: [],
-        });
         this.props.insertPreset(this.state.hoverCells);
       }
 

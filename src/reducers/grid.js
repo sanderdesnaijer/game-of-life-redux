@@ -68,7 +68,6 @@ const gridReducer = (state = initialState, action) => {
     }
     case ACTIONS.TOGGLE_CELL: {
       const { row, col, toggle } = action.payload;
-      console.log(row, col, toggle);
       // reset past if length
       const grid = state.grid.map((gRow, rowI) =>
         gRow.map((gCol, colI) => {
