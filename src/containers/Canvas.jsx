@@ -19,6 +19,7 @@ import {
   copyGrid,
   toggleCell,
   insertPreset,
+  togglePlay,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -38,6 +39,7 @@ const enhance = connect(
     copyGrid,
     toggleCell,
     insertPreset,
+    togglePlay,
   },
 );
 
@@ -94,6 +96,12 @@ class Canvas extends React.Component<Props> {
   componentWillReceiveProps(nextProps) {
     const nextGrid = nextProps.grid;
     const currentGrid = this.props.grid;
+
+    if (nextProps.mode !== this.props.mode) {
+      this.setState({
+        mode: nextProps.mode,
+      });
+    }
 
     if (nextProps.preset !== this.props.preset) {
       this.setState({
@@ -163,8 +171,14 @@ class Canvas extends React.Component<Props> {
 
       // mode
       if (mode === 'drag-add') {
+        // console.log(nextState.currentCell);
         // toggle when dragging
-        this.hoverCell(nextState.currentCell);
+        this.hoverCells([
+          {
+            ...nextState.currentCell,
+            value: 1,
+          },
+        ]);
 
         // here necesary for dragging
         if (this.state.pressed) {
@@ -193,10 +207,12 @@ class Canvas extends React.Component<Props> {
 
     this.setState({
       grid: clone,
+      pressed: false,
     });
   };
 
   hoverCells = newCells => {
+    console.log(newCells);
     const clone = [...this.props.grid];
     // reset to previous one
     this.state.hoverCells.map(cell => {
@@ -218,29 +234,6 @@ class Canvas extends React.Component<Props> {
     this.setState({
       hoverCells: newOldCells,
       grid: clone,
-    });
-  };
-
-  // TODO do we need this?
-  hoverCell = nextCell => {
-    const newGrid = [...this.state.grid];
-    const { currentCell } = this.state;
-
-    // if cell exist
-    if (currentCell.row !== undefined && newGrid[currentCell.row]) {
-      // reset old
-      newGrid[currentCell.row][currentCell.col] = this.props.grid[
-        currentCell.row
-      ][currentCell.col];
-
-      // set new
-      if (newGrid[nextCell.row] !== undefined) {
-        newGrid[nextCell.row][nextCell.col] = 1;
-      }
-    }
-
-    this.setState({
-      grid: newGrid,
     });
   };
 

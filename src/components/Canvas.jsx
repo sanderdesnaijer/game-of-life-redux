@@ -9,7 +9,7 @@ type Props = {
   width: number,
   height: number,
 };
-class PresetCanvas extends React.Component<Props> {
+class Canvas extends React.Component<Props> {
   static defaultProps = {
     width: 100,
     height: 100,
@@ -86,4 +86,4 @@ class PresetCanvas extends React.Component<Props> {
   }
 }
 
-export default PresetCanvas;
+export default Canvas;

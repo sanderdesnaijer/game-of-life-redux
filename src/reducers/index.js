@@ -9,7 +9,7 @@ import ACTIONS from '../constants/actions';
 
 const all = combineReducers({
   gridReducer: undoable(gridReducer, {
-    limit: 50, // set a limit for the history
+    limit: 200, // set a limit for the history
     // filter: excludeAction(ACTIONS.)
   }),
   gameStateReducer,

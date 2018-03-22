@@ -16,9 +16,10 @@ const initialState = {
   totalFrames: 0,
   currentFrame: 0,
   direction: 'forwards',
-  mode: 'insert-preset',
+  mode: 'drag-add',
   preset: [],
   activePreset: null,
+  showTrail: true,
 };
 
 export const getFps = store => store.gameStateReducer.fps;
@@ -27,6 +28,9 @@ export const getCurrentFrame = store => store.gameStateReducer.currentFrame;
 export const getDirection = store => store.gameStateReducer.direction;
 export const getMode = store => store.gameStateReducer.mode;
 export const getPreset = store => store.gameStateReducer.preset;
+export const getActivePreset = (store, id) =>
+  store.gameStateReducer.activePreset === id;
+export const getShowTrail = store => store.gameStateReducer.showTrail;
 
 const gameStateReducer = (state: State = initialState, action) => {
   switch (action.type) {
@@ -35,9 +39,11 @@ const gameStateReducer = (state: State = initialState, action) => {
       if (state.currentFrame === 0 && state.direction === 'backwards') {
         return state;
       }
+      const mode = playing ? 'playing' : 'drag-add';
       return {
         ...state,
         playing,
+        mode,
       };
     }
     case ACTIONS.CHANGE_FPS: {
@@ -88,6 +94,8 @@ const gameStateReducer = (state: State = initialState, action) => {
         ...state,
         activePreset: id,
         preset: cells,
+        mode: 'insert-preset',
+        playing: false,
       };
     }
     default: {
