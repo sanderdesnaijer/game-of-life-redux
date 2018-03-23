@@ -289,13 +289,6 @@ class Canvas extends React.Component<Props> {
 
           context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
           context.fillRect(x, y, cellSize, cellSize);
-        } else {
-          // context.fillStyle = '#FFF';
-          // context.lineWidth = 1;
-          // context.fillRect(x, y, cellSize, cellSize);
-          // context.strokeStyle = '#000';
-          // context.lineWidth = 1;
-          // context.strokeRect(x, y, cellSize, cellSize);
         }
       }
     }

@@ -19,7 +19,7 @@ const initialState = {
   mode: 'drag-add',
   preset: [],
   activePreset: null,
-  trail: 5,
+  trail: 0,
 };
 
 export const getFps = store => store.gameStateReducer.fps;

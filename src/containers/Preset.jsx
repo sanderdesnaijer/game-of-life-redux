@@ -20,7 +20,6 @@ const enhance = connect(
 class Presets extends Component {
   onClick = () => {
     const { id, grid } = this.props.preset;
-    console.log(id, grid);
     this.props.activatePreset(id, grid);
   };
 
@@ -28,14 +27,8 @@ class Presets extends Component {
     const className = `presets__item ${this.props.isActive ? 'active' : ''}`;
 
     return (
-      <li className={className}>
-        <a onClick={this.onClick}>
-          <Canvas
-            cellSize={20}
-            grid={this.props.preset.grid}
-            cellColor="#00ff00"
-          />
-        </a>
+      <li className={className} onClick={this.onClick}>
+        <Canvas cellSize={20} grid={this.props.preset.grid} cellColor="#000" />
       </li>
     );
   }

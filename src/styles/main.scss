@@ -80,6 +80,10 @@ button {
   &__item {
     display: inline-block;
     list-style: none;
+
+    &.active {
+      background: rgba(0,44,0,1)
+    }
   }
 }
 

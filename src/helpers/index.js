@@ -13,17 +13,16 @@ export function createEmptyGrid(rows, columns, value = 0) {
 }
 
 export function createFixtureGrid(gridToFill) {
-  const grid = [...gridToFill];
+  const grid = gridToFill.map(row => row.concat(0));
   const firstFillers = FIXTURES;
 
-  firstFillers.map(filler => {
-    const fillerRow = filler[0];
-    const fillerCol = filler[1];
-
-    if (grid[fillerRow] && grid[fillerRow][fillerCol]) {
-      grid[fillerRow][fillerCol] = 1;
-    }
-  });
+  grid.forEach((row, rowI) =>
+    row.forEach((col, colI) => {
+      if (firstFillers[rowI] && firstFillers[rowI][colI]) {
+        grid[rowI][colI] = firstFillers[rowI][colI];
+      }
+    }),
+  );
   return grid;
 }
 

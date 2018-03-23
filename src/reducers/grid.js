@@ -41,6 +41,7 @@ const gridReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.LOAD_GRID: {
       const { grid } = action.payload;
+
       return {
         ...grid,
       };
@@ -60,7 +61,6 @@ const gridReducer = (state = initialState, action) => {
         clone[cell.row][cell.col] = cell.value;
       });
 
-      // const cloneGrid = state.grid
       return {
         grid: clone,
         ...state,
