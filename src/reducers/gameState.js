@@ -19,7 +19,7 @@ const initialState = {
   mode: 'drag-add',
   preset: [],
   activePreset: null,
-  showTrail: true,
+  trail: 5,
 };
 
 export const getFps = store => store.gameStateReducer.fps;
@@ -30,7 +30,7 @@ export const getMode = store => store.gameStateReducer.mode;
 export const getPreset = store => store.gameStateReducer.preset;
 export const getActivePreset = (store, id) =>
   store.gameStateReducer.activePreset === id;
-export const getShowTrail = store => store.gameStateReducer.showTrail;
+export const getTrail = store => store.gameStateReducer.trail;
 
 const gameStateReducer = (state: State = initialState, action) => {
   switch (action.type) {
@@ -96,6 +96,13 @@ const gameStateReducer = (state: State = initialState, action) => {
         preset: cells,
         mode: 'insert-preset',
         playing: false,
+      };
+    }
+    case ACTIONS.CHANGE_TRAIL: {
+      const { trail } = action.payload;
+      return {
+        ...state,
+        trail,
       };
     }
     default: {

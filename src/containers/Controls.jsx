@@ -14,6 +14,7 @@ import {
   getFps,
   getDirection,
   getCurrentFrame,
+  getTrail,
 } from '../reducers/gameState';
 import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
@@ -34,6 +35,7 @@ import {
   saveGrid,
   changePlayDirection,
   clearGrid,
+  changeTrail,
 } from '../actions/actions';
 
 const enhance = connect(
@@ -47,6 +49,7 @@ const enhance = connect(
     fps: getFps(store),
     hasPreviousGrid: hasPreviousGrid(store),
     direction: getDirection(store),
+    trail: getTrail(store),
   }),
   {
     changeRows,
@@ -62,6 +65,7 @@ const enhance = connect(
     saveGrid,
     changePlayDirection,
     clearGrid,
+    changeTrail,
   },
 );
 
@@ -94,6 +98,13 @@ class Controls extends React.Component {
           value={this.props.cellSize}
           onChange={this.props.changeCellSize}
         />
+        <InputNumber
+          label="Trail"
+          value={this.props.trail}
+          onChange={this.props.changeTrail}
+          min={0}
+          max={10}
+        />
         <Input
           value={this.props.cellColor}
           type="text"
@@ -101,17 +112,18 @@ class Controls extends React.Component {
           label="Hex Color"
           onChange={this.props.changeCellColor}
         />
-        <div className="controls__group">
-          <Button label="reset" onClick={this.props.resetGrid} />
-          <Button icon="clear" onClick={this.props.clearGrid} />
-          <Button label="randomize" onClick={this.props.randomizeGrid} />
-        </div>
         <InputNumber
           label="FPS"
           max={60}
           value={this.props.fps}
           onChange={this.props.changeFps}
         />
+        <div className="controls__group">
+          <Button label="reset" onClick={this.props.resetGrid} />
+          <Button icon="clear" onClick={this.props.clearGrid} />
+          <Button label="randomize" onClick={this.props.randomizeGrid} />
+        </div>
+
         <div className="controls__group">
           <Button icon="save" onClick={this.props.saveGrid} />
           <Button

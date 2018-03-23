@@ -136,3 +136,10 @@ export const insertPreset = cells => ({
     cells,
   },
 });
+
+export const changeTrail = trail => ({
+  type: ACTIONS.CHANGE_TRAIL,
+  payload: {
+    trail,
+  },
+});

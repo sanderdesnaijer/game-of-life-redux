@@ -8,9 +8,14 @@ import {
   getColumns,
   getRows,
 } from '../reducers/grid';
-import { getCurrentFrame, getMode, getPreset } from '../reducers/gameState';
+import {
+  getCurrentFrame,
+  getMode,
+  getPreset,
+  getTrail,
+} from '../reducers/gameState';
 import KEYS from '../constants/keys';
-import { calcPixelToGridPosition, calcPreset } from '../helpers';
+import { calcPixelToGridPosition, calcPreset, calcSteps } from '../helpers';
 import { hexToRgb } from '../helpers/color';
 import {
   registerContext,
@@ -31,6 +36,7 @@ const enhance = connect(
     columns: getColumns(store),
     mode: getMode(store),
     preset: getPreset(store),
+    trail: getTrail(store),
   }),
   {
     registerContext,
@@ -66,8 +72,9 @@ class Canvas extends React.Component<Props> {
       mode: props.mode,
 
       // TODO move these to reducer
-      showTrail: true,
+      trail: props.trail,
       preset: props.preset,
+      trailSteps: calcSteps(props.trail),
     };
   }
 
@@ -95,24 +102,33 @@ class Canvas extends React.Component<Props> {
 
   componentWillReceiveProps(nextProps) {
     const nextGrid = nextProps.grid;
-    const currentGrid = this.props.grid;
+    const currentGrid = this.state.grid;
 
+    // trail
+    if (nextProps.trail !== this.props.trail) {
+      this.setState({
+        trail: nextProps.trail,
+        trailSteps: calcSteps(nextProps.trail),
+      });
+    }
+    // mode
     if (nextProps.mode !== this.props.mode) {
       this.setState({
         mode: nextProps.mode,
       });
     }
-
+    // preset
     if (nextProps.preset !== this.props.preset) {
       this.setState({
         preset: nextProps.preset,
       });
     }
-
+    // grid
     if (nextGrid !== currentGrid) {
-      if (this.state.showTrail) {
+      if (this.state.trail > 0) {
+        const { trailSteps } = this.state;
+
         // TODO make this great again
-        const steps = [0.5, 0.4, 0.3, 0.2, 0.1];
         const strengthGrid = nextGrid.map((row, rowI) =>
           row.map((col, colI) => {
             const currentStrength = col;
@@ -121,16 +137,18 @@ class Canvas extends React.Component<Props> {
             if (!currentGrid[rowI] || !currentGrid[rowI][colI])
               return currentStrength;
 
-            const pastStrength = currentGrid[rowI][colI];
+            const pastStrength = this.state.grid[rowI][colI];
 
             if (pastStrength > currentStrength) {
               if (pastStrength === 1) {
-                return steps[0];
+                return trailSteps[0];
               }
-              const stepIndex = steps.indexOf(pastStrength);
+              const stepIndex = trailSteps.indexOf(pastStrength);
+
               const nextStep = stepIndex + 1;
-              if (steps[nextStep]) {
-                return steps[nextStep];
+
+              if (trailSteps[nextStep]) {
+                return trailSteps[nextStep];
               }
 
               return 0;
@@ -138,6 +156,7 @@ class Canvas extends React.Component<Props> {
             return col;
           }),
         );
+
         // strenght grid
         this.setState({
           grid: strengthGrid,
@@ -171,7 +190,6 @@ class Canvas extends React.Component<Props> {
 
       // mode
       if (mode === 'drag-add') {
-        // console.log(nextState.currentCell);
         // toggle when dragging
 
         // here necesary for dragging
@@ -217,7 +235,9 @@ class Canvas extends React.Component<Props> {
 
     // reset to previous one
     this.state.hoverCells.map(cell => {
-      clone[cell.row][cell.col] = cell.oldValue;
+      if (cell.oldValue > 0) {
+        clone[cell.row][cell.col] = cell.oldValue;
+      }
     });
 
     // update with new values
@@ -269,6 +289,13 @@ class Canvas extends React.Component<Props> {
 
           context.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`;
           context.fillRect(x, y, cellSize, cellSize);
+        } else {
+          // context.fillStyle = '#FFF';
+          // context.lineWidth = 1;
+          // context.fillRect(x, y, cellSize, cellSize);
+          // context.strokeStyle = '#000';
+          // context.lineWidth = 1;
+          // context.strokeRect(x, y, cellSize, cellSize);
         }
       }
     }

@@ -3,7 +3,7 @@ import ACTIONS from '../constants/actions';
 
 import { calcTotalCells } from '../helpers';
 
-const cellSize = 20;
+const cellSize = 16;
 
 const initialState = {
   cellSize,

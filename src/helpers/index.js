@@ -178,3 +178,18 @@ export function calcTotalCells(cellSize: number, direction: string) {
   }
   return Math.floor(window.innerHeight / cellSize);
 }
+
+export function calcSteps(steps) {
+  const start = 0.8;
+  const stepSize = start / steps;
+  const list = [];
+
+  for (let i = 0; i < steps; i++) {
+    // /Math.round(num * 100) / 100
+    const step = start - i * stepSize;
+    const stepRounded = Math.round(step * 100) / 100;
+    list.push(stepRounded);
+  }
+
+  return list;
+}
