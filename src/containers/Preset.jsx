@@ -27,8 +27,15 @@ class Presets extends Component {
     const className = `presets__item ${this.props.isActive ? 'active' : ''}`;
 
     return (
-      <li className={className} onClick={this.onClick}>
-        <Canvas cellSize={20} grid={this.props.preset.grid} cellColor="#000" />
+      <li className={className}>
+        <a onClick={this.onClick}>
+          <h3>{this.props.preset.name}</h3>
+          <Canvas
+            cellSize={20}
+            grid={this.props.preset.grid}
+            cellColor="#03a9f4"
+          />
+        </a>
       </li>
     );
   }

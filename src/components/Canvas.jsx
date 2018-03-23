@@ -8,11 +8,13 @@ type Props = {
   cellSize: number,
   width: number,
   height: number,
+  showGrid: boolean,
 };
 class Canvas extends React.Component<Props> {
   static defaultProps = {
     width: 100,
     height: 100,
+    showGrid: true,
   };
   canvas: HTMLElement;
   ctx = null;
@@ -50,13 +52,16 @@ class Canvas extends React.Component<Props> {
           ? `rgba(${rgb.r},${rgb.g},${rgb.b}, ${strength})`
           : '#FFF';
         const strokeStyle = alive ? '#000' : 'DDD';
-        // order matters
-        context.fillStyle = fillStyle;
-        context.fillRect(x, y, cellSize, cellSize);
 
-        context.strokeStyle = strokeStyle;
-        context.lineWidth = lineWidth;
-        context.strokeRect(x, y, cellSize, cellSize);
+        // only draw when alive
+        if (this.props.showGrid || alive) {
+          context.strokeStyle = strokeStyle;
+          context.lineWidth = lineWidth;
+          context.strokeRect(x, y, cellSize, cellSize);
+
+          context.fillStyle = fillStyle;
+          context.fillRect(x, y, cellSize, cellSize);
+        }
       }
     }
   }
