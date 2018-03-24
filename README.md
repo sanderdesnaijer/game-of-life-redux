@@ -2,6 +2,8 @@
 
 The game of life created with React and Redux.
 
+![screenshot](/docs/screenshot.png)
+
 ## Installation
 
 * npm install
