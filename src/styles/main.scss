@@ -1,4 +1,7 @@
 @import 'font';
+@import 'presets';
+
+$dark: #000;
 
 body,
 html {
@@ -15,6 +18,9 @@ ul, li {
 input,
 button {
   font-size: 1em;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 2px;
 }
 
 #main-canvas {
@@ -53,67 +59,86 @@ button {
   display: flex;
   align-items: center;
 
+  &.color {
+    span {
+      margin-left: 114px;
+    }
+  }
+
+
   span {
     order: 2;
     margin-left: 20px;
+    text-transform: lowercase;
   }
 
   input {
     order: 1;
-    width: 60px;
+    width: 70px;
+    padding: 4px 10px;
+    border-radius: 2px;
   }
 
   &--button {
     &.active {
       button {
-        background: #def1e3;
+        // background: #def1e3;
       }
     }
   }
 }
 
-.presets {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  overflow: hidden;
-  &__item {
-    list-style: none;
-    height: 100px;
-    background: #fff;
-    margin: 0px 0px 10px;
+.button {
+  position: relative;
+  height: 30px;
+  &--toggle {
+    width:100%;
+    padding: 6px;
+    background-color: transparent;
+    text-align: left;
+  }
+  i {
+    float: right;
+  }
+}
 
-    h3 {
+
+
+.toggle-group {
+  // background-color: green;
+  background-color: transparent;
+  border-bottom:1px solid $dark;
+
+  &--horizontal {
+    .input {
       display: inline-block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(255,255,255,0.6);
-      padding: 10px;
-      margin: 0px;
+      margin: 0 12px 10px 0px;
     }
+  }
 
-    a {
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: pointer;
-      position: relative;
-      padding: 10px;
-      box-sizing: border-box;
+  &__content {
+    height: 0px;
+    overflow: hidden;
+  }
+  &.active {
+    .toggle-group__content {
+      height: auto;
+      padding: 8px 0px 8px 8px;
     }
+  }
 
+  &.presets {
     &.active {
-      background-color: #88ec13;
-    }
-
-    canvas {
-      height: 100%;
+      .toggle-group__content {
+        padding:8px 0px;
+      }
     }
   }
 }
+
+
+
+
 
 #app {
   width: 100%;

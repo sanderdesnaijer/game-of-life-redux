@@ -21,7 +21,7 @@ const ToggleButton = ({
   };
   return (
     <div className="input input--button input--toggle">
-      <button disabled={disabled} onClick={clickBtn}>
+      <button className="button" disabled={disabled} onClick={clickBtn}>
         <i className="material-icons">{isActive ? activeIcon : inActiveIcon}</i>
       </button>
     </div>

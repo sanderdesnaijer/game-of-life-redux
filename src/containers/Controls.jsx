@@ -20,6 +20,7 @@ import Input from '../components/Input';
 import InputNumber from '../components/InputNumber';
 import ToggleButton from '../components/ToggleButton';
 import Button from '../components/Button';
+import ToggleGroup from '../components/ToggleGroup';
 import Presets from './Presets';
 import {
   changeRows,
@@ -83,56 +84,63 @@ class Controls extends React.Component {
       this.props.currentFrame === 0 && this.props.direction === 'backwards';
     return (
       <div className="controls">
-        <InputNumber
-          label="Rows"
-          value={this.props.rows}
-          onChange={this.props.changeRows}
-        />
-        <InputNumber
-          label="Columns"
-          value={this.props.columns}
-          onChange={this.props.changeColumns}
-        />
-        <InputNumber
-          label="Size"
-          value={this.props.cellSize}
-          onChange={this.props.changeCellSize}
-        />
-        <InputNumber
-          label="Trail"
-          value={this.props.trail}
-          onChange={this.props.changeTrail}
-          min={0}
-          max={10}
-        />
-        <Input
-          value={this.props.cellColor}
-          type="text"
-          validate="hex"
-          label="Hex Color"
-          onChange={this.props.changeCellColor}
-        />
-        <InputNumber
-          label="FPS"
-          max={60}
-          value={this.props.fps}
-          onChange={this.props.changeFps}
-        />
-        <div className="controls__group">
-          <Button label="reset" onClick={this.props.resetGrid} />
-          <Button icon="clear" onClick={this.props.clearGrid} />
-          <Button label="randomize" onClick={this.props.randomizeGrid} />
+        <div>
+          <h1>John Conway's game of life</h1>
+          <p>react, redux, redux-saga</p>
         </div>
-
-        <div className="controls__group">
+        <ToggleGroup title="advanced" open={false}>
+          <InputNumber
+            label="Rows"
+            value={this.props.rows}
+            onChange={this.props.changeRows}
+            max={150}
+          />
+          <InputNumber
+            label="Columns"
+            value={this.props.columns}
+            onChange={this.props.changeColumns}
+            max={150}
+          />
+          <InputNumber
+            label="Size"
+            value={this.props.cellSize}
+            onChange={this.props.changeCellSize}
+            max={50}
+          />
+          <InputNumber
+            label="Trail"
+            value={this.props.trail}
+            onChange={this.props.changeTrail}
+            min={0}
+            max={10}
+          />
+          <Input
+            className="color"
+            value={this.props.cellColor}
+            type="text"
+            validate="hex"
+            label="Hex Color"
+            onChange={this.props.changeCellColor}
+          />
+          <InputNumber
+            label="FPS"
+            max={60}
+            value={this.props.fps}
+            onChange={this.props.changeFps}
+          />
+        </ToggleGroup>
+        <ToggleGroup align="horizontal" title="grid" open={false}>
+          <Button label="reset" onClick={this.props.resetGrid} />
+          <Button label="clear" onClick={this.props.clearGrid} />
+          <Button label="randomize" onClick={this.props.randomizeGrid} />
           <Button icon="save" onClick={this.props.saveGrid} />
           <Button
             active={this.props.direction === 'forwards'}
             icon="sync"
             onClick={this.props.changePlayDirection}
           />
-        </div>
-        <div className="controls__group">
+        </ToggleGroup>
+        <ToggleGroup align="horizontal" title="controls" open={true}>
           <Button
             icon="skip_previous"
             onClick={this.onGotoPreviousFrame}
@@ -146,8 +154,10 @@ class Controls extends React.Component {
             disabled={disablePlay}
           />
           <Button icon="skip_next" onClick={this.onGotoNextFrame} />
-        </div>
-        <Presets />
+        </ToggleGroup>
+        <ToggleGroup title="presets" className="presets" open={true}>
+          <Presets />
+        </ToggleGroup>
       </div>
     );
   }

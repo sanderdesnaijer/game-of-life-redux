@@ -7,6 +7,7 @@ type Props = {
   onChange: (value: string) => void,
   label: string,
   validate: string,
+  className: string,
 };
 
 type State = {
@@ -45,8 +46,9 @@ class Input extends React.Component<Props, State> {
   };
 
   render() {
+    const className = `${this.props.className} input input--text`;
     return (
-      <div className="input input--number">
+      <div className={className}>
         <span>{this.props.label}</span>
         <input
           type="text"

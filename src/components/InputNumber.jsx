@@ -56,6 +56,13 @@ class InputNumber extends React.Component<Props, State> {
           value={this.state.value}
           onChange={this.onChange}
         />
+        <input
+          type="range"
+          max={this.props.max}
+          min={this.props.min}
+          value={this.state.value}
+          onChange={this.onChange}
+        />
       </div>
     );
   }

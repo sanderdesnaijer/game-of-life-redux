@@ -13,7 +13,7 @@ const Button = ({ label, icon, disabled, active, onClick }: Props) => (
   <div
     className={active ? 'input input--button active' : 'input input--button'}
   >
-    <button onClick={onClick} disabled={disabled}>
+    <button className="button" onClick={onClick} disabled={disabled}>
       {icon ? <i className="material-icons">{icon}</i> : label}
     </button>
   </div>

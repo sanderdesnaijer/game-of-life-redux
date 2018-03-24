@@ -23,13 +23,8 @@ class Presets extends Component {
   };
 
   render() {
-    // const className = `presets__item ${
-    //   preset.id === this.props.activatePreset ? 'active' : ''
-    // }`;
-
     return (
       <div className="presets-container">
-        <h2>Presets</h2>
         <ul className="presets">
           {presets.map((preset, i) => (
             <Preset key={preset.id} preset={preset} />
