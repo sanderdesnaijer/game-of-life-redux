@@ -10,6 +10,10 @@ The game of life created with React and Redux.
 
 * npm run start
 
+## Editor
+
+Hit the 'c' key to output the grid. You can use this to make custom presets.
+
 ## To do
 
 * production build task
