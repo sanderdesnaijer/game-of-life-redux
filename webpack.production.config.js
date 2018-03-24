@@ -4,29 +4,19 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  entry: ['react-hot-loader/patch', './src/index.jsx'],
+  mode: 'production',
+  entry: ['./src/index.jsx'],
   output: {
     path: `${__dirname}/dist`,
     filename: 'bundle.js',
   },
-  devServer: {
-    contentBase: './',
-    hot: true,
-    open: true,
-    // inline: false,
-  },
-  devtool: 'source-map',
 
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-          //  'eslint-loader'
-        ],
+        use: ['babel-loader'],
       },
       {
         test: /\.scss$/,
@@ -37,17 +27,18 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+  },
   resolve: {
     extensions: ['*', '.js', '.jsx'],
   },
   plugins: [
     new ExtractTextPlugin({
       filename: '[name].min.css',
-      disable: process.env.NODE_ENV === 'development',
     }),
     new webpack.DefinePlugin({
       IS_DEBUG: JSON.stringify(isDebug),
     }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 };
