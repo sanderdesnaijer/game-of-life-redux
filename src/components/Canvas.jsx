@@ -19,11 +19,14 @@ class Canvas extends React.Component<Props> {
   canvas: HTMLElement;
   ctx = null;
 
-  registerDom = canvas => (this.canvas = canvas);
+  registerDom = canvas => {
+    this.canvas = canvas;
+    if (this.canvas) {
+      this.setContext();
+    }
+  };
 
-  componentDidMount() {
-    this.setContext();
-  }
+  componentDidMount() {}
 
   clearGrid() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -67,7 +70,6 @@ class Canvas extends React.Component<Props> {
   }
 
   setContext = () => {
-    // make a function here and resue, 2 == 2 x linewidth
     const height = this.props.grid.length * this.props.cellSize;
     const width = this.props.grid[0].length * this.props.cellSize;
 
@@ -82,9 +84,8 @@ class Canvas extends React.Component<Props> {
   };
 
   render() {
-    // make a function here and resue, 2 == 2 x linewidth
-    const height = this.props.grid.length * this.props.cellSize + 2;
-    const width = this.props.grid[0].length * this.props.cellSize + 2;
+    const height = this.props.grid.length * this.props.cellSize;
+    const width = this.props.grid[0].length * this.props.cellSize;
     return (
       <canvas width={`${width}`} height={`${height}`} ref={this.registerDom} />
     );

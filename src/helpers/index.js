@@ -167,10 +167,6 @@ export function recalcGrid(emptyGrid, filledGrid) {
   return checkedGrid;
 }
 
-export function isValidHex(hex: string) {
-  return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex);
-}
-
 export function calcTotalCells(cellSize: number, direction: string) {
   if (direction === 'horizontal') {
     return Math.floor(window.innerWidth / cellSize);

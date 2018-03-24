@@ -28,7 +28,8 @@ export const getCurrentFrame = store => store.gameStateReducer.currentFrame;
 export const getDirection = store => store.gameStateReducer.direction;
 export const getMode = store => store.gameStateReducer.mode;
 export const getPreset = store => store.gameStateReducer.preset;
-export const getActivePreset = (store, id) => store.gameStateReducer.activePreset === id;
+export const getActivePreset = (store, id) =>
+  store.gameStateReducer.activePreset === id;
 export const getTrail = store => store.gameStateReducer.trail;
 
 const gameStateReducer = (state: State = initialState, action) => {
@@ -44,6 +45,12 @@ const gameStateReducer = (state: State = initialState, action) => {
         playing,
         mode,
         activePreset: null,
+      };
+    }
+    case ACTIONS.TOGGLE_CELL: {
+      return {
+        ...state,
+        playing: false,
       };
     }
     case ACTIONS.CHANGE_FPS: {
