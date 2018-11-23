@@ -1,6 +1,6 @@
 ## John Conway's game of life
 
-The game of life created with React and Redux.
+The game of life created with React and Redux. [click here for a demo](https://sanderdesnaijer.github.io/csv-xml-validator/)
 
 ![screenshot](/docs/screenshot.png)
 
